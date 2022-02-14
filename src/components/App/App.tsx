@@ -1,11 +1,13 @@
 import React from 'react';
-import {HashRouter} from 'react-router-dom';
+import {HashRouter, Routes} from 'react-router-dom';
 import './App.scss';
 
 const App: React.FC = () => {
   return (
     <HashRouter>
-      Soccer Stat
+      <Routes>
+
+      </Routes>
     </HashRouter>
   );
 };
