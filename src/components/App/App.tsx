@@ -1,6 +1,6 @@
 import React from 'react';
 import {HashRouter, Route, Routes} from 'react-router-dom';
-import Layout from '../common/Layout/Layout';
+import Layout from '../layout/Layout/Layout';
 import NoMatch from '../pages/NoMatch/NoMatch';
 import Main from '../pages/Main/Main';
 import CompetitionList from '../pages/CompetitionList/CompetitionList';
