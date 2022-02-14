@@ -16,13 +16,9 @@ const App: React.FC = () => {
         <Route path="/" element={<Layout/>}>
           <Route index element={<Main/>}/>
           <Route path="competition_list" element={<CompetitionList/>}/>
-          <Route path="competition">
-            <Route path=":id" element={<Competition/>}/>
-          </Route>
+          <Route path="competition/:id" element={<Competition/>}/>
           <Route path="team_list" element={<TeamList/>}/>
-          <Route path="team">
-            <Route path=":id" element={<Team/>}/>
-          </Route>
+          <Route path="team/:id" element={<Team/>}/>
           <Route path="*" element={<NoMatch/>}/>
         </Route>
       </Routes>
