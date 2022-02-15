@@ -1,10 +1,5 @@
 import {COMPETITION_LIST_URL, TEAM_LIST_URL} from './settings';
 
-// Защита типа для корректного чтения сообщений об ошибках в блоках catch
-function isError(e: unknown): e is Error {
-  return e instanceof Error;
-}
-
 async function load(url: string, errorMessage: string): Promise<any> {
   const headers: HeadersInit = new Headers();
   headers.set('X-Auth-Token', process.env.REACT_APP_API_KEY as string);
@@ -13,10 +8,8 @@ async function load(url: string, errorMessage: string): Promise<any> {
   try {
     response = await fetch(url, {headers});
   } catch (err) {
-    if (isError(err)) {
-      throw new Error(`${errorMessage}. Возможно, превышен лимит запросов. Попробуйте позже. (${err.message})`);
-    }
-    return;
+    const {message} = (err as Error);
+    throw new Error(`${errorMessage}. Возможно, превышен лимит запросов. Попробуйте позже. (${message})`);
   }
 
   if (response.status === 403) {
