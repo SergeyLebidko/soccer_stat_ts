@@ -1,6 +1,7 @@
 import {COMPETITION_LIST_URL, TEAM_LIST_URL} from './settings';
+import {TCompetition, TCompetitionPayload, TTeam, TTeamPayload} from './types';
 
-async function load(url: string, errorMessage: string): Promise<any> {
+async function load<T = TCompetitionPayload | TTeamPayload>(url: string, errorMessage: string): Promise<T> {
   const headers: HeadersInit = new Headers();
   headers.set('X-Auth-Token', process.env.REACT_APP_API_KEY as string);
 
@@ -21,19 +22,25 @@ async function load(url: string, errorMessage: string): Promise<any> {
   if (response.status === 429) {
     throw new Error(`${errorMessage}. Превышен лимит количества запросов. Попробуйте позже.`);
   }
+  if (!response.ok) {
+    throw new Error(`${errorMessage}. Код ошибки - ${response.status}`);
+  }
 
-  const json = await response.json();
-
-  if (response.status === 400) throw new Error(`${errorMessage}. (${json.message}).`);
-  if (!response.ok) throw new Error(`${errorMessage}. Код ошибки - ${response.status}`);
-
-  return json;
+  return await response.json();
 }
 
-export function loadCompetitionList() {
-  return load(COMPETITION_LIST_URL, 'Не удалось загрузить список лиг');
+export async function loadCompetitionList(): Promise<Array<TCompetition>> {
+  const payload: TCompetitionPayload = await load<TCompetitionPayload>(
+      COMPETITION_LIST_URL,
+      'Не удалось загрузить список лиг',
+  );
+  return payload.competitions;
 }
 
-export function loadTeamList() {
-  return load(TEAM_LIST_URL, 'Не удалось загрузить список команд');
+export async function loadTeamList(): Promise<Array<TTeam>> {
+  const payload: TTeamPayload = await load<TTeamPayload>(
+      TEAM_LIST_URL,
+      'Не удалось загрузить список команд',
+  );
+  return payload.teams;
 }
