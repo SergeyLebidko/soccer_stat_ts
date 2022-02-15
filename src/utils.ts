@@ -1,4 +1,4 @@
-import {COMPETITION_LIST_URL} from './settings';
+import {COMPETITION_LIST_URL, TEAM_LIST_URL} from './settings';
 
 // Защита типа для корректного чтения сообщений об ошибках в блоках catch
 function isError(e: unknown): e is Error {
@@ -39,4 +39,8 @@ async function load(url: string, errorMessage: string): Promise<any> {
 
 export function loadCompetitionList() {
   return load(COMPETITION_LIST_URL, 'Не удалось загрузить список лиг');
+}
+
+export function loadTeamList() {
+  return load(TEAM_LIST_URL, 'Не удалось загрузить список команд');
 }

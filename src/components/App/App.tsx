@@ -7,11 +7,11 @@ import CompetitionList from '../pages/CompetitionList/CompetitionList';
 import Competition from '../pages/Competition/Competition';
 import TeamList from '../pages/TeamList/TeamList';
 import Team from '../pages/Team/Team';
-import {loadCompetitionList} from '../../utils';
+import {loadCompetitionList, loadTeamList} from '../../utils';
 
 const App: React.FC = () => {
   useEffect(() => {
-    loadCompetitionList().then((competitionList) => console.log(competitionList));
+    Promise.all([loadCompetitionList(), loadTeamList()]).then((data) => console.log(data));
   }, []);
 
   return (
