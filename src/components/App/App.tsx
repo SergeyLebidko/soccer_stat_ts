@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {HashRouter, Route, Routes} from 'react-router-dom';
 import Layout from '../layout/Layout/Layout';
 import NoMatch from '../pages/NoMatch/NoMatch';
@@ -7,8 +7,13 @@ import CompetitionList from '../pages/CompetitionList/CompetitionList';
 import Competition from '../pages/Competition/Competition';
 import TeamList from '../pages/TeamList/TeamList';
 import Team from '../pages/Team/Team';
+import {loadCompetitionList} from '../../utils';
 
 const App: React.FC = () => {
+  useEffect(() => {
+    loadCompetitionList().then((competitionList) => console.log(competitionList));
+  }, []);
+
   return (
     <HashRouter>
       <Routes>
