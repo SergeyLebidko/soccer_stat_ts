@@ -1,6 +1,7 @@
 import React from 'react';
 import {TTeam} from '../../../types';
 import './TeamList.scss';
+import TeamCard from '../../cards/TeamCard/TeamCard';
 
 type TeamListProp = {
   list: Array<TTeam>
@@ -9,7 +10,7 @@ type TeamListProp = {
 const TeamList: React.FC<TeamListProp> = ({list}) => {
   return (
     <ul>
-      {list.map((team) => <li key={team.id}>{team.name}</li>)}
+      {list.map((team) => <TeamCard key={team.id} team={team}/>)}
     </ul>
   );
 };

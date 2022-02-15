@@ -1,6 +1,7 @@
 import React from 'react';
 import {TCompetition} from '../../../types';
 import './CompetitionList.scss';
+import CompetitionCard from '../../cards/CompetitionCard/CompetitionCard';
 
 type CompetitionListProp = {
   list: Array<TCompetition>
@@ -10,7 +11,7 @@ const CompetitionList: React.FC<CompetitionListProp> = ({list}) => {
   return (
     <ul>
       {list.map((competition) =>
-        <li key={competition.id}>{competition.name}</li>,
+        <CompetitionCard key={competition.id} competition={competition}/>,
       )}
     </ul>
   );

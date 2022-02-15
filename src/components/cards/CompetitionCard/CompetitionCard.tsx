@@ -1,8 +1,13 @@
 import React from 'react';
+import {TCompetition} from '../../../types';
 import './CompetitionCard.scss';
 
-const CompetitionCard: React.FC = () => {
-  return <div>Карточка лиги</div>;
+type CompetitionCardProps = {
+  competition: TCompetition
+}
+
+const CompetitionCard: React.FC<CompetitionCardProps> = ({competition}) => {
+  return <li>{competition.name}</li>;
 };
 
 export default CompetitionCard;
