@@ -7,7 +7,6 @@ import CompetitionList from '../pages/CompetitionList/CompetitionList';
 import Competition from '../pages/Competition/Competition';
 import TeamList from '../pages/TeamList/TeamList';
 import Team from '../pages/Team/Team';
-import './App.scss';
 
 const App: React.FC = () => {
   return (
