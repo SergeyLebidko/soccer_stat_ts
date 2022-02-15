@@ -25,13 +25,14 @@ const App: React.FC = () => {
           setCompetitionList(competitionList);
           setTeamList(teamList);
         })
-        .catch((err) => setError(err))
+        .catch((err: Error) => setError(err.message))
         .finally(() => setPreloader(false));
   }, []);
 
   if (preloader) return <Preloader/>;
 
-  if (error) return <Error/>;
+  console.log(error);
+  if (error) return <Error error={error}/>;
 
   return (
     <HashRouter>

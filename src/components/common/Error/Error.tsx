@@ -1,8 +1,12 @@
 import React from 'react';
 import './Error.scss';
 
-const Error: React.FC = () => {
-  return <div>Страница с писанием ошибки</div>;
+type ErrorProps = {
+  error: string;
+}
+
+const Error: React.FC<ErrorProps> = ({error}) => {
+  return <div>{error}</div>;
 };
 
 export default Error;
