@@ -1,3 +1,5 @@
+@import './presets';
+
 @import url('https://fonts.googleapis.com/css2?family=Big+Shoulders+Display&family=Roboto:wght@300&display=swap');
 
 * {
@@ -5,4 +7,6 @@
   padding: 0;
   box-sizing: border-box;
   font-family: 'Roboto', sans-serif;
+  color: $black;
+  font-size: 1rem;
 }
