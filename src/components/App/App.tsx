@@ -31,7 +31,6 @@ const App: React.FC = () => {
 
   if (preloader) return <Preloader/>;
 
-  console.log(error);
   if (error) return <Error error={error}/>;
 
   return (
