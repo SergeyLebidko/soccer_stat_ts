@@ -1,11 +1,12 @@
 import React from 'react';
-import './Header.scss';
 import {Link, NavLink} from 'react-router-dom';
+import ball from '../../../content/ball.png';
+import './Header.scss';
 
 const Header: React.FC = () => {
   return (
     <div>
-      <Link to="/">Главная</Link>
+      <Link to="/"><img src={ball}/></Link>
       <NavLink to="competitions" style={({isActive}) => isActive ? {color: 'red'} : {}}>
         Лиги
       </NavLink>

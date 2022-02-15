@@ -1,8 +1,13 @@
 import React from 'react';
+import ball from '../../../content/ball.png';
 import './Main.scss';
 
 const Main: React.FC = () => {
-  return <div>Главная страница сайта с его логотипом и кратким описанием</div>;
+  return (
+    <div>
+      <img src={ball}/>
+    </div>
+  );
 };
 
 export default Main;
