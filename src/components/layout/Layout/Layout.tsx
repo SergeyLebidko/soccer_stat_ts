@@ -5,14 +5,14 @@ import './Layout.scss';
 
 const Layout: React.FC = () => {
   return (
-    <div>
-      <header>
+    <>
+      <header className="layout__header">
         <Header/>
       </header>
-      <main>
+      <main className="layout__main">
         <Outlet/>
       </main>
-    </div>
+    </>
   );
 };
 
