@@ -39,10 +39,10 @@ const App: React.FC = () => {
       <Routes>
         <Route path="/" element={<Layout/>}>
           <Route index element={<Main/>}/>
-          <Route path="competition_list" element={<CompetitionList list={competitionList}/>}/>
-          <Route path="competition/:id" element={<Competition/>}/>
-          <Route path="team_list" element={<TeamList list={teamList}/>}/>
-          <Route path="team/:id" element={<Team/>}/>
+          <Route path="competitions" element={<CompetitionList list={competitionList}/>}/>
+          <Route path="competitions/:id" element={<Competition/>}/>
+          <Route path="teams" element={<TeamList list={teamList}/>}/>
+          <Route path="teams/:id" element={<Team/>}/>
           <Route path="*" element={<NoMatch/>}/>
         </Route>
       </Routes>

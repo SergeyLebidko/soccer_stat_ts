@@ -6,10 +6,10 @@ const Header: React.FC = () => {
   return (
     <div>
       <Link to="/">Главная</Link>
-      <NavLink to="competition_list" style={({isActive}) => isActive ? {color: 'red'} : {}}>
+      <NavLink to="competitions" style={({isActive}) => isActive ? {color: 'red'} : {}}>
         Лиги
       </NavLink>
-      <NavLink to="team_list" style={({isActive}) => isActive ? {color: 'red'} : {}}>
+      <NavLink to="teams" style={({isActive}) => isActive ? {color: 'red'} : {}}>
         Команды
       </NavLink>
     </div>
