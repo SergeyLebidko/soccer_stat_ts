@@ -24,6 +24,7 @@ const CompetitionList: React.FC<CompetitionListProp> = ({list}) => {
 
   const changeSearchHandler = (event: React.ChangeEvent): void => {
     setSearch((event.target as HTMLInputElement).value);
+    setPageStart(0);
   };
 
   const listForShow = createListForShow();

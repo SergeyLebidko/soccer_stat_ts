@@ -2,8 +2,8 @@ import React from 'react';
 import {ReactComponent as Left} from '../../../content/left.svg';
 import {ReactComponent as Right} from '../../../content/right.svg';
 import {PAGE_SIZE} from '../../../settings';
-import './Paginator.scss';
 import classNames from 'classnames';
+import './Paginator.scss';
 
 type PaginatorProps = {
   pageStart: number,
@@ -11,61 +11,36 @@ type PaginatorProps = {
   setPage: (nextPage: number) => void
 }
 
+type LinkData = {
+  page: number,
+  display: string
+}
+
 const Paginator: React.FC<PaginatorProps> = ({pageStart, total, setPage}) => {
-  const getCurrentPageIndex = (): number => Math.floor(pageStart / PAGE_SIZE) + 1;
-  const getLastPageIndex = (): number => Math.ceil(total / PAGE_SIZE);
-  const isFirstPage = (): boolean => pageStart === 0;
-  const isLastPage = (): boolean => pageStart >= (total - PAGE_SIZE);
+  const data: Array<LinkData> = [];
 
-  const curIdx = getCurrentPageIndex();
-  const lstIdx = getLastPageIndex();
-
-  const content: Array<React.ReactElement> = [];
-
-  const getLinkClasses = (index: number): string => {
-    return classNames('paginator__link', {'paginator__link_current': index === curIdx});
-  };
-
-  let idx = 1;
-  let dotAllow = true;
-  for (let page = 0; page <= total; page += (PAGE_SIZE - 1)) {
-    if (idx <= 2 || idx >= (lstIdx - 1) || (idx >= (curIdx - 1) && idx <= (curIdx + 1))) {
-      content.push(
-          <span key={idx} className={getLinkClasses(idx)} onClick={() => setPage((idx - 1) * PAGE_SIZE)}>
-            {idx}
-          </span>,
-      );
-      dotAllow = true;
-    } else if (dotAllow) {
-      content.push(<span key={idx} className="paginator__link">...</span>);
-      dotAllow = false;
-    }
-
-    idx++;
+  for (let page=0; page<total; page += PAGE_SIZE) {
+    data.push({page, display: Math.floor(page / PAGE_SIZE) + 1 + ''});
   }
 
-  const toLeft = (): void => {
-    if (!isFirstPage()) {
-      setPage(pageStart - PAGE_SIZE);
-    }
+  const linkClasses = (page: number): string => {
+    return classNames('paginator__link', {'paginator__link_current': page === pageStart});
   };
 
-  const toRight = (): void => {
-    if (!isLastPage()) {
-      setPage(pageStart + PAGE_SIZE);
-    }
+  const linkClickHandler = (page: number): void => {
+    if (page !== pageStart) setPage(page);
   };
 
-  if (!isFirstPage()) {
-    content.unshift(<Left className="paginator__arrow" onClick={toLeft}/>);
-  }
-  if (!isLastPage()) {
-    content.push(<Right className="paginator__arrow" onClick={toRight}/>);
-  }
+  const toLeft = (): void => setPage(pageStart - PAGE_SIZE);
+  const toRight = (): void => setPage(pageStart + PAGE_SIZE);
 
   return (
     <div className="paginator">
-      {content}
+      {pageStart > 0 && <Left className="paginator__arrow" onClick={toLeft}/>}
+      {data.map(({page, display}, index) =>
+        <span key={index} className={linkClasses(page)} onClick={()=>linkClickHandler(page)}>{display}</span>)
+      }
+      {pageStart < (total - PAGE_SIZE) && <Right className="paginator__arrow" onClick={toRight}/>}
     </div>
   );
 };
