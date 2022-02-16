@@ -45,12 +45,12 @@
     transition: all 500ms;
 
     &:hover {
-      color: $accent;
+      color: $blue-accent;
     }
   }
 
   &__link_active {
-    color: $accent;
-    border-bottom: 3px solid $accent;
+    color: $blue-accent;
+    border-bottom: 3px solid $blue-accent;
   }
 }

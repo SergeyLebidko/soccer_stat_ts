@@ -1,4 +1,5 @@
 import React from 'react';
+import {ReactComponent as ErrorImage} from '../../../content/error.svg';
 import './Error.scss';
 
 type ErrorProps = {
@@ -6,7 +7,12 @@ type ErrorProps = {
 }
 
 const Error: React.FC<ErrorProps> = ({error}) => {
-  return <div>{error}</div>;
+  return (
+    <div className="error">
+      <ErrorImage/>
+      <h1 className="error__text">{error}</h1>
+    </div>
+  );
 };
 
 export default Error;
