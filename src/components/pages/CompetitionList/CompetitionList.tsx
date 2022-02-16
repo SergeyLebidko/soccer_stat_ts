@@ -2,6 +2,8 @@ import React, {useCallback, useState} from 'react';
 import {TCompetition} from '../../../types';
 import CompetitionCard from '../../cards/CompetitionCard/CompetitionCard';
 import SearchField from '../../common/SearchField/SearchField';
+import Paginator from '../../common/Paginator/Paginator';
+import {PAGE_SIZE} from '../../../settings';
 import './CompetitionList.scss';
 
 type CompetitionListProp = {
@@ -9,6 +11,7 @@ type CompetitionListProp = {
 }
 
 const CompetitionList: React.FC<CompetitionListProp> = ({list}) => {
+  const [pageStart, setPageStart] = useState<number>(0);
   const [search, setSearch] = useState<string>('');
 
   const createListForShow = useCallback(() => {
@@ -29,10 +32,15 @@ const CompetitionList: React.FC<CompetitionListProp> = ({list}) => {
     <div className="competition_list">
       <SearchField search={search} changeSearchHandler={changeSearchHandler}/>
       <ul className="competition_list__cards_block">
-        {listForShow.map((competition) =>
-          <CompetitionCard key={competition.id} competition={competition}/>,
-        )}
+        {listForShow
+            .filter((_, index) => index >= pageStart && index <= (pageStart + PAGE_SIZE - 1))
+            .map((competition) =>
+              <CompetitionCard key={competition.id} competition={competition}/>,
+            )
+        }
       </ul>
+      {listForShow.length > PAGE_SIZE &&
+      <Paginator pageStart={pageStart} total={listForShow.length} setPage={setPageStart}/>}
     </div>
   );
 };

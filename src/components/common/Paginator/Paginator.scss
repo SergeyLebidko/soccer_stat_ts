@@ -1,0 +1,32 @@
+@import "../../../style/presets";
+
+.paginator {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+
+  > * {
+    user-select: none;
+    cursor: pointer;
+    margin-top: 0.5em;
+  }
+
+  &__arrow {
+    width: 1em;
+    height: 1em;
+
+  }
+
+  &__link + &__link, &__link + &__arrow, &__arrow + &__link {
+    margin-left: 1em;
+  }
+
+  &__link_current {
+    padding: 2px 4px;
+    background-color: $blue-accent;
+    color: $white;
+    border-radius: 3px;
+  }
+
+}
