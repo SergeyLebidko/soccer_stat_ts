@@ -23,8 +23,13 @@
     box-shadow: 0 4px 4px $gray-light;
   }
 
+  &:hover &__title {
+    color: $blue-accent;
+  }
+
   &__title {
     font-size: 1.3em;
+    transition: all 500ms;
   }
 
   &__emblem {
