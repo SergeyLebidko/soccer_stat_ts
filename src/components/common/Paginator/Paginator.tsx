@@ -20,7 +20,19 @@ const Paginator: React.FC<PaginatorProps> = ({pageStart, total, setPage}) => {
   const data: Array<LinkData> = [];
 
   for (let page=0; page<total; page += PAGE_SIZE) {
-    data.push({page, display: Math.floor(page / PAGE_SIZE) + 1 + ''});
+    let hasDot = true;
+    hasDot = hasDot && page > PAGE_SIZE;
+    hasDot = hasDot && page < (total - PAGE_SIZE * 2);
+    hasDot = hasDot && (page < (pageStart - PAGE_SIZE) || page > (pageStart + PAGE_SIZE));
+
+    if (hasDot && data.length > 0 && data[data.length - 1].display === '...') {
+      continue;
+    }
+
+    data.push({
+      page: (hasDot ? (page < pageStart ? pageStart - PAGE_SIZE * 2 : pageStart + PAGE_SIZE * 2) : page),
+      display: (hasDot ? '...' : Math.floor(page / PAGE_SIZE) + 1 + ''),
+    });
   }
 
   const linkClasses = (page: number): string => {
