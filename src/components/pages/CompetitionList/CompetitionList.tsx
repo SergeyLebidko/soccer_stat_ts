@@ -1,7 +1,8 @@
 import React from 'react';
 import {TCompetition} from '../../../types';
-import './CompetitionList.scss';
 import CompetitionCard from '../../cards/CompetitionCard/CompetitionCard';
+import SearchField from '../../common/SearchField/SearchField';
+import './CompetitionList.scss';
 
 type CompetitionListProp = {
   list: Array<TCompetition>
@@ -9,11 +10,14 @@ type CompetitionListProp = {
 
 const CompetitionList: React.FC<CompetitionListProp> = ({list}) => {
   return (
-    <ul>
-      {list.map((competition) =>
-        <CompetitionCard key={competition.id} competition={competition}/>,
-      )}
-    </ul>
+    <div>
+      <SearchField/>
+      <ul>
+        {list.map((competition) =>
+          <CompetitionCard key={competition.id} competition={competition}/>,
+        )}
+      </ul>
+    </div>
   );
 };
 
