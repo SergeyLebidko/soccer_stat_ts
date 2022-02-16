@@ -1,8 +1,7 @@
 import React, {useEffect, useState} from 'react';
-import {HashRouter, Route, Routes} from 'react-router-dom';
+import {HashRouter, Navigate, Route, Routes} from 'react-router-dom';
 import Layout from '../layout/Layout/Layout';
 import NoMatch from '../pages/NoMatch/NoMatch';
-import Main from '../pages/Main/Main';
 import CompetitionList from '../pages/CompetitionList/CompetitionList';
 import Competition from '../pages/Competition/Competition';
 import TeamList from '../pages/TeamList/TeamList';
@@ -37,7 +36,7 @@ const App: React.FC = () => {
     <HashRouter>
       <Routes>
         <Route path="/" element={<Layout/>}>
-          <Route index element={<Main/>}/>
+          <Route index element={<Navigate to="competitions"/>}/>
           <Route path="competitions" element={<CompetitionList list={competitionList}/>}/>
           <Route path="competitions/:id" element={<Competition/>}/>
           <Route path="teams" element={<TeamList list={teamList}/>}/>
