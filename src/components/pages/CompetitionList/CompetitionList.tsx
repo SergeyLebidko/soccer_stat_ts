@@ -10,9 +10,9 @@ type CompetitionListProp = {
 
 const CompetitionList: React.FC<CompetitionListProp> = ({list}) => {
   return (
-    <div>
+    <div className="competition_list">
       <SearchField/>
-      <ul>
+      <ul className="competition_list__cards_block">
         {list.map((competition) =>
           <CompetitionCard key={competition.id} competition={competition}/>,
         )}
