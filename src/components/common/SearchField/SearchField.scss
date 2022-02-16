@@ -1,10 +1,23 @@
-.search_field {
-  &__field {
+@import "../../../style/presets";
 
+.search_field {
+
+  &__field {
+    padding: 4px 1.5em 4px 1em;
+    outline: none;
+    border: 1px solid $gray-light;
+    border-radius: 3px;
   }
 
   &__find_icon {
-    width: 2em;
-    height: 2em;
+    position: relative;
+    left: -1.3em;
+    top: 2px;
+    width: 1em;
+    height: 1em;
+
+    path {
+      fill: $gray-light;
+    }
   }
 }
