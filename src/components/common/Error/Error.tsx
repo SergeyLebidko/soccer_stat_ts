@@ -9,7 +9,7 @@ type ErrorProps = {
 const Error: React.FC<ErrorProps> = ({error}) => {
   return (
     <div className="error">
-      <ErrorImage/>
+      <ErrorImage className="error__error_icon"/>
       <h1 className="error__text">{error}</h1>
     </div>
   );
