@@ -6,13 +6,13 @@ import Paginator from '../../common/Paginator/Paginator';
 import TeamCard from '../../cards/TeamCard/TeamCard';
 import {PAGE_SIZE} from '../../../settings';
 import {isTCompetition, isTTeam} from '../../../utils';
-import './CompetitionList.scss';
+import './ItemsList.scss';
 
 type CompetitionListProp = {
   list: Array<TCompetition | TTeam>
 }
 
-const CompetitionList: React.FC<CompetitionListProp> = ({list}) => {
+const ItemsList: React.FC<CompetitionListProp> = ({list}) => {
   const [pageStart, setPageStart] = useState<number>(0);
   const [search, setSearch] = useState<string>('');
 
@@ -52,13 +52,13 @@ const CompetitionList: React.FC<CompetitionListProp> = ({list}) => {
   });
 
   return (
-    <div className="competition_list">
+    <div className="items_list">
       <SearchField search={search} changeSearchHandler={changeSearchHandler}/>
-      <ul className="competition_list__cards_block">{content}</ul>
+      <ul className="items_list__cards_block">{content}</ul>
       {searchedLength > PAGE_SIZE &&
       <Paginator pageStart={pageStart} total={searchedLength} setPage={setPageStart}/>}
     </div>
   );
 };
 
-export default CompetitionList;
+export default ItemsList;
