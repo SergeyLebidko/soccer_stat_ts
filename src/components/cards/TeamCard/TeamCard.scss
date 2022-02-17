@@ -1,0 +1,45 @@
+@import "../../../style/presets";
+@import "../../common/NoPhoto/NoPhoto";
+
+.team_card {
+  cursor: pointer;
+
+  background-color: $white;
+  border: 1px solid $gray-light;
+  border-radius: 5px;
+  padding: 1em;
+
+  height: 14em;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+
+  transition: all 300ms;
+
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 4px 4px $gray-light;
+  }
+
+  &:hover &__title {
+    color: $blue-accent;
+  }
+
+  &__title {
+    font-size: 1.1em;
+    transition: all 500ms;
+  }
+
+  &__emblem {
+    width: 8em;
+    height: 8em;
+    object-fit: contain;
+  }
+
+  &__emblem, .no_photo {
+    margin-top: auto;
+    margin-bottom: auto;
+  }
+}

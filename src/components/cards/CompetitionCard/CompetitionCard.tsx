@@ -17,7 +17,12 @@ const CompetitionCard: React.FC<CompetitionCardProps> = ({competition}) => {
       <h1 className="competition_card__title">{competition.name}</h1>
       {competition.emblemUrl === null || hasEmblemError ?
         <NoPhoto/> :
-        <img className="competition_card__emblem" src={competition.emblemUrl} onError={emblemErrorHandler}/>
+        <img
+          className="competition_card__emblem"
+          src={competition.emblemUrl}
+          onError={emblemErrorHandler}
+          alt={`Лига ${competition.name}`}
+        />
       }
       <h3 className="competition_card__country">{competition.area.name}</h3>
     </li>
