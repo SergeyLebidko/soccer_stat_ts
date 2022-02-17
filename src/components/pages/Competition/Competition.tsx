@@ -28,6 +28,8 @@ const Competition: React.FC = () => {
   useEffect(() => {
     setPreloader(true);
     setError(null);
+
+    // TODO Вставить применение фильтра по дате
     loadCompetitionCalendar(id || '')
         .then((data) => {
           const [{name}, matches] = data;
@@ -42,11 +44,8 @@ const Competition: React.FC = () => {
 
   if (error) return <Error error={error}/>;
 
-  let _matches = matches;
-  const searchedLength = _matches.length;
-
   // Применяем пагинацию
-  _matches = _matches.filter((_, index) => index >= pageStart && index <= (pageStart + PAGE_SIZE - 1));
+  const _matches = matches.filter((_, index) => index >= pageStart && index <= (pageStart + PAGE_SIZE - 1));
 
   return (
     <div className="competitions">
@@ -55,8 +54,8 @@ const Competition: React.FC = () => {
       <ul className="competitions__cards_block">
         {_matches.map(((match) => <MatchCard key={match.id} match={match}/>))}
       </ul>
-      {searchedLength > PAGE_SIZE &&
-      <Paginator pageStart={pageStart} total={searchedLength} setPage={setPageStart}/>}
+      {matches.length > PAGE_SIZE &&
+      <Paginator pageStart={pageStart} total={matches.length} setPage={setPageStart}/>}
     </div>
   );
 };
