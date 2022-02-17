@@ -3,5 +3,5 @@ export const PAGE_SIZE = 18;
 
 const URL_PREFIX = 'https://api.football-data.org/v2';
 
-export const COMPETITION_LIST_URL = `${URL_PREFIX}/competitions/`;
-export const TEAM_LIST_URL = `${URL_PREFIX}/teams/`;
+export const COMPETITION_URL = `${URL_PREFIX}/competitions/`;
+export const TEAM_URL = `${URL_PREFIX}/teams/`;

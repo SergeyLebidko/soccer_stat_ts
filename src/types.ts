@@ -13,12 +13,51 @@ export type TTeam = {
   crestUrl: string
 }
 
+export type TMatch = {
+  id: number,
+  utcDate: string,
+  status: string,
+  homeTeam: {
+    id: number,
+    name: string
+  },
+  awayTeam: {
+    id: number,
+    name: string
+  },
+  score: {
+    winner: string,
+    fullTime: {
+      homeTeam: number | null,
+      awayTeam: number | null
+    },
+    halfTime: {
+      homeTeam: number | null,
+      awayTeam: number | null
+    },
+    extraTime: {
+      homeTeam: number | null,
+      awayTeam: number | null
+    },
+    penalties: {
+      homeTeam: number | null,
+      awayTeam: number | null
+    }
+  }
+}
+
 export type TCompetitionPayload = {
-  count: number,
   competitions: Array<TCompetition>
 }
 
 export type TTeamPayload = {
-  count: number,
   teams: Array<TTeam>
+}
+
+export type TCompetitionCalendarPayload = {
+  competition: {
+    id: number,
+    name: string,
+  },
+  matches: Array<TMatch>
 }

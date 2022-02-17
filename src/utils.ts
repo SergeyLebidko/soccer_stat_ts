@@ -1,5 +1,11 @@
-import {COMPETITION_LIST_URL, TEAM_LIST_URL} from './settings';
-import {TCompetition, TCompetitionPayload, TTeam, TTeamPayload} from './types';
+import {COMPETITION_URL, TEAM_URL} from './settings';
+import {
+  TCompetition, TCompetitionCalendarPayload,
+  TCompetitionPayload,
+  TMatch,
+  TTeam,
+  TTeamPayload,
+} from './types';
 
 // Сетевые функции
 async function load<T = TCompetitionPayload | TTeamPayload>(url: string, errorMessage: string): Promise<T> {
@@ -31,19 +37,28 @@ async function load<T = TCompetitionPayload | TTeamPayload>(url: string, errorMe
 }
 
 export async function loadCompetitionList(): Promise<Array<TCompetition>> {
-  const payload: TCompetitionPayload = await load<TCompetitionPayload>(
-      COMPETITION_LIST_URL,
+  const payload = await load<TCompetitionPayload>(
+      COMPETITION_URL,
       'Не удалось загрузить список лиг',
   );
   return payload.competitions;
 }
 
 export async function loadTeamList(): Promise<Array<TTeam>> {
-  const payload: TTeamPayload = await load<TTeamPayload>(
-      TEAM_LIST_URL,
+  const payload = await load<TTeamPayload>(
+      TEAM_URL,
       'Не удалось загрузить список команд',
   );
   return payload.teams;
+}
+
+// eslint-disable-next-line max-len
+export async function loadCompetitionCalendar(id: number): Promise<[Omit<TCompetition, 'emblemUrl' | 'area'>, Array<TMatch>]> {
+  const payload = await load<TCompetitionCalendarPayload>(
+      `${COMPETITION_URL}${id}/matches/`,
+      'Не удалось загрузить календарь лиги',
+  );
+  return [payload.competition, payload.matches];
 }
 
 // Защиты типов
