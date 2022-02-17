@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {useParams} from 'react-router-dom';
+import {Link, useParams} from 'react-router-dom';
 import Preloader from '../../common/Preloader/Preloader';
 import Error from '../../common/Error/Error';
 import MatchCard from '../../cards/MatchCard/MatchCard';
@@ -8,6 +8,7 @@ import {loadCompetitionCalendar} from '../../../utils';
 import './Competition.scss';
 import {PAGE_SIZE} from '../../../settings';
 import Paginator from '../../common/Paginator/Paginator';
+import BreadCrumbs from '../../common/BreadCrumbs/BreadCrumbs';
 
 const Competition: React.FC = () => {
   const {id} = useParams();
@@ -43,7 +44,7 @@ const Competition: React.FC = () => {
 
   return (
     <div className="competitions">
-      {competitionName}
+      <BreadCrumbs link={<Link to="/competitions">Лиги</Link>} title={competitionName}/>
       <ul className="competitions__cards_block">
         {_matches.map(((match) => <MatchCard key={match.id} match={match}/>))}
       </ul>
