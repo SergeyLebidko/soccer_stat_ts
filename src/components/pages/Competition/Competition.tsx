@@ -3,12 +3,13 @@ import {Link, useParams} from 'react-router-dom';
 import Preloader from '../../common/Preloader/Preloader';
 import Error from '../../common/Error/Error';
 import MatchCard from '../../cards/MatchCard/MatchCard';
-import {TMatch} from '../../../types';
-import {loadCompetitionCalendar} from '../../../utils';
-import './Competition.scss';
-import {PAGE_SIZE} from '../../../settings';
 import Paginator from '../../common/Paginator/Paginator';
 import BreadCrumbs from '../../common/BreadCrumbs/BreadCrumbs';
+import DatesFilter from '../../common/DatesFilter/DatesFilter';
+import {TMatch} from '../../../types';
+import {loadCompetitionCalendar} from '../../../utils';
+import {PAGE_SIZE} from '../../../settings';
+import './Competition.scss';
 
 const Competition: React.FC = () => {
   const {id} = useParams();
@@ -18,10 +19,15 @@ const Competition: React.FC = () => {
 
   const [pageStart, setPageStart] = useState<number>(0);
 
+  const [from] = useState<number | null>(null);
+  const [to] = useState<number | null>(null);
+
   const [preloader, setPreloader] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
+    setPreloader(true);
+    setError(null);
     loadCompetitionCalendar(id || '')
         .then((data) => {
           const [{name}, matches] = data;
@@ -30,7 +36,7 @@ const Competition: React.FC = () => {
         })
         .catch((err: Error) => setError(err.message))
         .finally(()=>setPreloader(false));
-  }, [id]);
+  }, [id, from, to]);
 
   if (preloader) return <Preloader/>;
 
@@ -45,6 +51,7 @@ const Competition: React.FC = () => {
   return (
     <div className="competitions">
       <BreadCrumbs link={<Link to="/competitions">Лиги</Link>} title={competitionName}/>
+      <DatesFilter/>
       <ul className="competitions__cards_block">
         {_matches.map(((match) => <MatchCard key={match.id} match={match}/>))}
       </ul>

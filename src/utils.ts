@@ -69,3 +69,14 @@ export function isTCompetition(object: TCompetition | TTeam): object is TCompeti
 export function isTTeam(object: TCompetition | TTeam): object is TTeam {
   return 'crestUrl' in object;
 }
+
+// Вспомогательные функции
+const randomLetter = (sequence: string): string => sequence[Math.floor(Math.random() * sequence.length)];
+
+export function createRandomString(size = 8): string {
+  const result = [];
+  for (let index = 0; index < size; index++) {
+    result.push(randomLetter('QWERTYUIOPASDFGHJKLZXCVBNMqwertyuiopasdfghjklzxcvbnm'));
+  }
+  return result.join('');
+}

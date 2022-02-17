@@ -1,0 +1,24 @@
+@import "../../../style/presets";
+
+.dates_filter {
+  display: flex;
+  flex-wrap: wrap;
+
+  &__filter_block {
+    margin: 4px 2em 0 0;
+  }
+
+  &__title {
+    display: inline-block;
+    width: 1.5em;
+  }
+
+  &__date_field {
+    margin-left: 0.5em;
+    padding: 4px;
+    outline: none;
+    border: 1px solid $gray-light;
+    border-radius: 3px;
+  }
+
+}
