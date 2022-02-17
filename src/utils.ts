@@ -53,7 +53,7 @@ export async function loadTeamList(): Promise<Array<TTeam>> {
 }
 
 // eslint-disable-next-line max-len
-export async function loadCompetitionCalendar(id: number): Promise<[Omit<TCompetition, 'emblemUrl' | 'area'>, Array<TMatch>]> {
+export async function loadCompetitionCalendar(id: string): Promise<[Omit<TCompetition, 'emblemUrl' | 'area'>, Array<TMatch>]> {
   const payload = await load<TCompetitionCalendarPayload>(
       `${COMPETITION_URL}${id}/matches/`,
       'Не удалось загрузить календарь лиги',

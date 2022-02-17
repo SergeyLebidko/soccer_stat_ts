@@ -1,8 +1,13 @@
 import React from 'react';
+import {TMatch} from '../../../types';
 import './MatchCard.scss';
 
-const MatchCard: React.FC = () => {
-  return <div>Описание матча</div>;
+type MatchCardProps = {
+  match: TMatch
+}
+
+const MatchCard: React.FC<MatchCardProps> = ({match}) => {
+  return <div>{match.id}</div>;
 };
 
 export default MatchCard;
