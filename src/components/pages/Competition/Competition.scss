@@ -1,0 +1,14 @@
+.competitions {
+
+  > * + * {
+    margin-top: 1em;
+  }
+
+  &__cards_block {
+    list-style-type: none;
+
+    li + li {
+      margin-top: 0.5em;
+    }
+  }
+}

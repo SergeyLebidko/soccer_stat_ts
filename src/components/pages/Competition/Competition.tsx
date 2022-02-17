@@ -2,10 +2,10 @@ import React, {useEffect, useState} from 'react';
 import {useParams} from 'react-router-dom';
 import Preloader from '../../common/Preloader/Preloader';
 import Error from '../../common/Error/Error';
+import MatchCard from '../../cards/MatchCard/MatchCard';
 import {TMatch} from '../../../types';
 import {loadCompetitionCalendar} from '../../../utils';
 import './Competition.scss';
-import MatchCard from '../../cards/MatchCard/MatchCard';
 
 const Competition: React.FC = () => {
   const {id} = useParams();
@@ -32,9 +32,11 @@ const Competition: React.FC = () => {
   if (error) return <Error error={error}/>;
 
   return (
-    <div>
+    <div className="competitions">
       {competitionName}
-      {matches.map(((match) => <MatchCard key={match.id} match={match}/>))}
+      <ul className="competitions__cards_block">
+        {matches.map(((match) => <MatchCard key={match.id} match={match}/>))}
+      </ul>
     </div>
   );
 };

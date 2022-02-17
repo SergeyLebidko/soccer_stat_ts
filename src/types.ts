@@ -31,10 +31,6 @@ export type TMatch = {
       homeTeam: number | null,
       awayTeam: number | null
     },
-    halfTime: {
-      homeTeam: number | null,
-      awayTeam: number | null
-    },
     extraTime: {
       homeTeam: number | null,
       awayTeam: number | null
