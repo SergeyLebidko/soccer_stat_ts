@@ -1,7 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {HashRouter, Navigate, Route, Routes} from 'react-router-dom';
 import Layout from '../layout/Layout/Layout';
-import NoMatch from '../pages/NoMatch/NoMatch';
 import ItemsList from '../pages/ItemsList/ItemsList';
 import Competition from '../pages/Competition/Competition';
 import Team from '../pages/Team/Team';
@@ -40,7 +39,7 @@ const App: React.FC = () => {
           <Route path="competitions/:id" element={<Competition/>}/>
           <Route path="teams" element={<ItemsList list={teamList}/>}/>
           <Route path="teams/:id" element={<Team/>}/>
-          <Route path="*" element={<NoMatch/>}/>
+          <Route path="*" element={<Error error="Старница не найдена..."/>}/>
         </Route>
       </Routes>
     </HashRouter>
