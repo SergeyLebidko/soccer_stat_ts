@@ -1,5 +1,5 @@
 // Размер страницы для пагинатора
-export const PAGE_SIZE = 15;
+export const PAGE_SIZE = 18;
 
 const URL_PREFIX = 'https://api.football-data.org/v2';
 

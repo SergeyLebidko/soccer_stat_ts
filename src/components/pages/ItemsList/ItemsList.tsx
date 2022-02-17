@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {TCompetition, TTeam} from '../../../types';
 import CompetitionCard from '../../cards/CompetitionCard/CompetitionCard';
 import SearchField from '../../common/SearchField/SearchField';
@@ -15,6 +15,11 @@ type CompetitionListProp = {
 const ItemsList: React.FC<CompetitionListProp> = ({list}) => {
   const [pageStart, setPageStart] = useState<number>(0);
   const [search, setSearch] = useState<string>('');
+
+  // При изменении исходного списка - сбрасываем параметры пагинации
+  useEffect(()=>{
+    setPageStart(0);
+  }, [list]);
 
   const changeSearchHandler = (event: React.ChangeEvent): void => {
     setSearch((event.target as HTMLInputElement).value);
