@@ -1,13 +1,15 @@
 import React, {useState} from 'react';
-import {TCompetition} from '../../../types';
+import {TCompetition, TTeam} from '../../../types';
 import CompetitionCard from '../../cards/CompetitionCard/CompetitionCard';
 import SearchField from '../../common/SearchField/SearchField';
 import Paginator from '../../common/Paginator/Paginator';
+import TeamCard from '../../cards/TeamCard/TeamCard';
 import {PAGE_SIZE} from '../../../settings';
+import {isTCompetition, isTTeam} from '../../../utils';
 import './CompetitionList.scss';
 
 type CompetitionListProp = {
-  list: Array<TCompetition>
+  list: Array<TCompetition | TTeam>
 }
 
 const CompetitionList: React.FC<CompetitionListProp> = ({list}) => {
@@ -24,8 +26,13 @@ const CompetitionList: React.FC<CompetitionListProp> = ({list}) => {
   // Отсекаем элементы, не подходящие под критерии поиска
   if (search.length > 0) {
     const _search = search.toLowerCase();
-    _list = list.filter(({name: cName, area: {name: aName}}) => {
-      return cName.toLowerCase().includes(_search) || aName.toLowerCase().includes(_search);
+    _list = list.filter((item: TCompetition | TTeam): boolean => {
+      if (isTCompetition(item)) {
+        const {name: cName, area: {name: aName}} = item;
+        return cName.toLowerCase().includes(_search) || aName.toLowerCase().includes(_search);
+      } else {
+        return item.name.toLowerCase().includes(_search);
+      }
     });
   }
   const searchedLength = _list.length;
@@ -33,12 +40,21 @@ const CompetitionList: React.FC<CompetitionListProp> = ({list}) => {
   // Применяем пагинацию
   _list = _list.filter((_, index) => index >= pageStart && index <= (pageStart + PAGE_SIZE - 1));
 
+  // Формируем контент (итоговый список элементов React)
+  const content: Array<React.ReactElement> = [];
+  _list.forEach((item) => {
+    if (isTCompetition(item)) {
+      content.push(<CompetitionCard key={item.id} competition={item}/>);
+    }
+    if (isTTeam(item)) {
+      content.push(<TeamCard key={item.id} team={item}/>);
+    }
+  });
+
   return (
     <div className="competition_list">
       <SearchField search={search} changeSearchHandler={changeSearchHandler}/>
-      <ul className="competition_list__cards_block">
-        {_list.map((item) => <CompetitionCard key={item.id} competition={item}/>)}
-      </ul>
+      <ul className="competition_list__cards_block">{content}</ul>
       {searchedLength > PAGE_SIZE &&
       <Paginator pageStart={pageStart} total={searchedLength} setPage={setPageStart}/>}
     </div>

@@ -1,6 +1,7 @@
 import {COMPETITION_LIST_URL, TEAM_LIST_URL} from './settings';
 import {TCompetition, TCompetitionPayload, TTeam, TTeamPayload} from './types';
 
+// Сетевые функции
 async function load<T = TCompetitionPayload | TTeamPayload>(url: string, errorMessage: string): Promise<T> {
   const headers: HeadersInit = new Headers();
   headers.set('X-Auth-Token', process.env.REACT_APP_API_KEY as string);
@@ -43,4 +44,13 @@ export async function loadTeamList(): Promise<Array<TTeam>> {
       'Не удалось загрузить список команд',
   );
   return payload.teams;
+}
+
+// Защиты типов
+export function isTCompetition(object: TCompetition | TTeam): object is TCompetition {
+  return 'emblemUrl' in object;
+}
+
+export function isTTeam(object: TCompetition | TTeam): object is TTeam {
+  return 'crestUrl' in object;
 }
