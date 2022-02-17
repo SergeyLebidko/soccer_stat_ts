@@ -19,17 +19,13 @@ const Competition: React.FC = () => {
 
   const [pageStart, setPageStart] = useState<number>(0);
 
-  const [from] = useState<number | null>(null);
-  const [to] = useState<number | null>(null);
+  // const [from, setFrom] = useState<string>('');
+  // const [to, setTo] = useState<string>('');
 
   const [preloader, setPreloader] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    setPreloader(true);
-    setError(null);
-
-    // TODO Вставить применение фильтра по дате
     loadCompetitionCalendar(id || '')
         .then((data) => {
           const [{name}, matches] = data;
@@ -38,7 +34,7 @@ const Competition: React.FC = () => {
         })
         .catch((err: Error) => setError(err.message))
         .finally(()=>setPreloader(false));
-  }, [id, from, to]);
+  }, [id]);
 
   if (preloader) return <Preloader/>;
 
@@ -50,6 +46,7 @@ const Competition: React.FC = () => {
   return (
     <div className="competitions">
       <BreadCrumbs link={<Link to="/competitions">Лиги</Link>} title={competitionName}/>
+      <h1 className="competitions__title">Матчи</h1>
       <DatesFilter/>
       <ul className="competitions__cards_block">
         {_matches.map(((match) => <MatchCard key={match.id} match={match}/>))}
