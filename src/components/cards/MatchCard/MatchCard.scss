@@ -2,10 +2,82 @@
 
 .match_card {
   display: flex;
-  justify-content: space-between;
 
+  border: 1px solid $gray-light;
   background-color: $white;
   border-radius: 3px;
 
-  padding: 6px;
+  padding: 12px 8px;
+
+  transition: all 300ms;
+
+  &:hover {
+    transform: translateX(4px);
+    box-shadow: -4px 0 4px $gray-light;
+  }
+
+  &__date, &__status {
+    min-width: 10em;
+  }
+
+  &__teams {
+    display: flex;
+
+    a {
+      min-width: 20em;
+      text-decoration: none;
+      font-weight: bold;
+      transition: all 300ms;
+
+      &:hover {
+        color: $blue-accent;
+      }
+    }
+  }
+
+  &__score {
+    min-width: 15em;
+
+    display: flex;
+    justify-content: center;
+
+    > * + * {
+      margin-left: 1em;
+    }
+  }
 }
+
+@media (max-width: $large-width) {
+  .match_card {
+    &__teams {
+      a {
+        min-width: 15em;
+      }
+    }
+
+    &__score {
+      min-width: 10em;
+    }
+  }
+}
+
+@media (max-width: $medium-width) {
+  .match_card {
+    flex-direction: column;
+
+    &__teams {
+      flex-direction: column;
+      margin: 1rem 0;
+
+      a {
+        font-size: 1.3rem;
+        margin-top: 2px;
+      }
+    }
+
+    &__score {
+      justify-content: flex-start;
+    }
+  }
+}
+

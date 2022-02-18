@@ -1,23 +1,31 @@
 import React from 'react';
 import {TMatch} from '../../../types';
+import {STATUS_LIST} from '../../../settings';
+import {getDateString} from '../../../utils';
 import './MatchCard.scss';
+import ScoreElement from '../../common/ScoreElement/ScoreElement';
+import {Link} from 'react-router-dom';
 
 type MatchCardProps = {
   match: TMatch
 }
 
 const MatchCard: React.FC<MatchCardProps> = ({match}) => {
+  const {utcDate, status, homeTeam, awayTeam, score: {fullTime, extraTime, penalties}} = match;
+
   return (
     <li className="match_card">
-      <span>{match.utcDate}</span>
-      <span>{match.status}</span>
-      <span>{match.homeTeam.name}</span>
-      <span>{match.awayTeam.name}</span>
-      <span>{match.score.fullTime.homeTeam}</span>
-      <span>{match.score.fullTime.awayTeam}</span>
-      <span>{match.score.extraTime.homeTeam}</span>
-      <span>{match.score.penalties.homeTeam}</span>
-      <span>{match.score.penalties.awayTeam}</span>
+      <span className="match_card__date">{getDateString(utcDate)}</span>
+      <span className="match_card__status">{STATUS_LIST[status]}</span>
+      <div className="match_card__teams">
+        <Link to={`/teams/${homeTeam.id}`}>{homeTeam.name}</Link>
+        <Link to={`/teams/${awayTeam.id}`}>{awayTeam.name}</Link>
+      </div>
+      <div className="match_card__score">
+        <ScoreElement homeTeamScore={fullTime.homeTeam} awayTeamScore={fullTime.awayTeam}/>
+        <ScoreElement homeTeamScore={extraTime.homeTeam} awayTeamScore={extraTime.awayTeam} brackets/>
+        <ScoreElement homeTeamScore={penalties.homeTeam} awayTeamScore={penalties.awayTeam} brackets/>
+      </div>
     </li>
   );
 };

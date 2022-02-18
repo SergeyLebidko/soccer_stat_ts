@@ -84,3 +84,13 @@ export function createRandomString(size = 8): string {
 export function getPaginatedList<T = any>(list: Array<T>, pageStart: number): Array<T> {
   return list.filter((_, index) => index >= pageStart && index <= (pageStart + PAGE_SIZE - 1));
 }
+
+export function getDateString(rawData: string):string {
+  const date = new Date(Date.parse(rawData));
+  const day = ('00' + date.getDate()).slice(-2);
+  const mon = ('00' + (date.getMonth() + 1)).slice(-2);
+  const year = date.getFullYear();
+  const hour = ('00' + date.getHours()).slice(-2);
+  const min = ('00' + date.getMinutes()).slice(-2);
+  return `${day}.${mon}.${year} ${hour}:${min}`;
+}
