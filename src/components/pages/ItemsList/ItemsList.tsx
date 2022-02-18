@@ -8,11 +8,11 @@ import {PAGE_SIZE} from '../../../settings';
 import {getPaginatedList, isTCompetition, isTTeam} from '../../../utils';
 import './ItemsList.scss';
 
-type CompetitionListProp = {
+type ItemListProps = {
   list: Array<TCompetition | TTeam>
 }
 
-const ItemsList: React.FC<CompetitionListProp> = ({list}) => {
+const ItemsList: React.FC<ItemListProps> = ({list}) => {
   const [pageStart, setPageStart] = useState<number>(0);
   const [search, setSearch] = useState<string>('');
 

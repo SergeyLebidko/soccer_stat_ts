@@ -2,8 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {HashRouter, Navigate, Route, Routes} from 'react-router-dom';
 import Layout from '../layout/Layout/Layout';
 import ItemsList from '../pages/ItemsList/ItemsList';
-import Competition from '../pages/Competition/Competition';
-import Team from '../pages/Team/Team';
+import Calendar from '../pages/Calendar/Calendar';
 import Preloader from '../common/Preloader/Preloader';
 import Error from '../common/Error/Error';
 import {TCompetition, TTeam} from '../../types';
@@ -36,9 +35,9 @@ const App: React.FC = () => {
         <Route path="/" element={<Layout/>}>
           <Route index element={<Navigate to="competitions"/>}/>
           <Route path="competitions" element={<ItemsList list={competitionList}/>}/>
-          <Route path="competitions/:id" element={<Competition/>}/>
           <Route path="teams" element={<ItemsList list={teamList}/>}/>
-          <Route path="teams/:id" element={<Team/>}/>
+          <Route path="competitions/:id" element={<Calendar calendarType="competitions"/>}/>
+          <Route path="teams/:id" element={<Calendar calendarType="teams"/>}/>
           <Route path="*" element={<Error error="Старница не найдена..."/>}/>
         </Route>
       </Routes>

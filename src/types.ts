@@ -1,3 +1,5 @@
+export type CalendarType = 'competitions' | 'teams';
+
 export type TCompetition = {
   id: number,
   name: string,
@@ -57,3 +59,4 @@ export type TCompetitionCalendarPayload = {
   },
   matches: Array<TMatch>
 }
+
