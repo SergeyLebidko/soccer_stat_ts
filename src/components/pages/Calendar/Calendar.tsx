@@ -36,7 +36,7 @@ const Calendar: React.FC<CalendarProps> = ({calendarType}) => {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    // Ищем в загруженных ранее данных информацию о соревновании или команде
+    // Ищем в загруженных ранее списках команд и соревнований информацию о соревновании или команде
     let title: string | undefined;
     if (calendarType === 'competition') {
       title = context.competitionList.find((item) => (item.id + '') === id)?.name;
@@ -47,12 +47,17 @@ const Calendar: React.FC<CalendarProps> = ({calendarType}) => {
 
     // Если информация не найдена, выводим ошибку
     if (title === undefined) {
-      setError('Не найти данные о лиге или команде');
+      if (calendarType === 'competition') {
+        setError('Не удалось найти данные о лиге');
+      }
+      if (calendarType === 'team') {
+        setError('Не удалось найти данные о команде');
+      }
       setPreloader(false);
       return;
     }
 
-    // Если информация найдена - пытаемся загрузить список матчей
+    // Если информация найдена - пытаемся загрузить список матчей лиги или команды
     let loadedPromise: Promise<Array<TMatch>> = Promise.resolve([]);
     if (calendarType === 'competition') {
       loadedPromise = loadCompetitionCalendar(id || '');
@@ -77,12 +82,6 @@ const Calendar: React.FC<CalendarProps> = ({calendarType}) => {
   // Применяем пагинацию
   const _matches = getPaginatedList<TMatch>(matches, pageStart);
 
-  // Формируем контент (итоговый список элементов React)
-  const content: Array<React.ReactElement> = [];
-  _matches.forEach((match) => {
-    content.push(<MatchCard key={match.id} match={match}/>);
-  });
-
   return (
     <div className="calendar">
       {calendarType === 'competition' && <BreadCrumbs link={<Link to="/competitions">Лиги</Link>} title={title}/>}
@@ -90,7 +89,7 @@ const Calendar: React.FC<CalendarProps> = ({calendarType}) => {
       <h1 className="calendar__title">Матчи</h1>
       <DatesFilter/>
       <ul className="calendar__cards_block">
-        {content}
+        {_matches.map((match) => <MatchCard key={match.id} match={match}/>)}
       </ul>
       {matches.length > PAGE_SIZE &&
       <Paginator pageStart={pageStart} total={matches.length} setPage={setPageStart}/>}
