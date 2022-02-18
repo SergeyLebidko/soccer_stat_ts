@@ -7,14 +7,14 @@ import Paginator from '../../common/Paginator/Paginator';
 import BreadCrumbs from '../../common/BreadCrumbs/BreadCrumbs';
 import DatesFilter from '../../common/DatesFilter/DatesFilter';
 import {TMatch} from '../../../types';
-import {loadCompetitionCalendar} from '../../../utils';
+import {getPaginatedList, loadCompetitionCalendar} from '../../../utils';
 import {PAGE_SIZE} from '../../../settings';
 import './Competition.scss';
 
 const Competition: React.FC = () => {
   const {id} = useParams();
 
-  const [competitionName, setCompetitionName] = useState<string>('');
+  const [title, setTitle] = useState<string>('');
   const [matches, setMatches] = useState<Array<TMatch>>([]);
 
   const [pageStart, setPageStart] = useState<number>(0);
@@ -29,7 +29,7 @@ const Competition: React.FC = () => {
     loadCompetitionCalendar(id || '')
         .then((data) => {
           const [{name}, matches] = data;
-          setCompetitionName(name);
+          setTitle(name);
           setMatches(matches);
         })
         .catch((err: Error) => setError(err.message))
@@ -41,11 +41,11 @@ const Competition: React.FC = () => {
   if (error) return <Error error={error}/>;
 
   // Применяем пагинацию
-  const _matches = matches.filter((_, index) => index >= pageStart && index <= (pageStart + PAGE_SIZE - 1));
+  const _matches = getPaginatedList<TMatch>(matches, pageStart);
 
   return (
     <div className="competitions">
-      <BreadCrumbs link={<Link to="/competitions">Лиги</Link>} title={competitionName}/>
+      <BreadCrumbs link={<Link to="/competitions">Лиги</Link>} title={title}/>
       <h1 className="competitions__title">Матчи</h1>
       <DatesFilter/>
       <ul className="competitions__cards_block">

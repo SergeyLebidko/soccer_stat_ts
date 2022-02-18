@@ -8,7 +8,7 @@ const DatesFilter: React.FC = () => {
 
   const fromChangeHandler = (event: React.ChangeEvent): void => {
     // TODO Тестовый вывод
-    console.log((event.target as HTMLInputElement).value);
+    console.log((event.target as HTMLInputElement).value, (event.target as HTMLInputElement).value.length);
   };
 
   return (

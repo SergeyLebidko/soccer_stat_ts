@@ -1,4 +1,4 @@
-import {COMPETITION_URL, TEAM_URL} from './settings';
+import {COMPETITION_URL, PAGE_SIZE, TEAM_URL} from './settings';
 import {
   TCompetition, TCompetitionCalendarPayload,
   TCompetitionPayload,
@@ -71,12 +71,16 @@ export function isTTeam(object: TCompetition | TTeam): object is TTeam {
 }
 
 // Вспомогательные функции
-const randomLetter = (sequence: string): string => sequence[Math.floor(Math.random() * sequence.length)];
+const getRandomLetter = (sequence: string): string => sequence[Math.floor(Math.random() * sequence.length)];
 
 export function createRandomString(size = 8): string {
   const result = [];
   for (let index = 0; index < size; index++) {
-    result.push(randomLetter('QWERTYUIOPASDFGHJKLZXCVBNMqwertyuiopasdfghjklzxcvbnm'));
+    result.push(getRandomLetter('QWERTYUIOPASDFGHJKLZXCVBNMqwertyuiopasdfghjklzxcvbnm'));
   }
   return result.join('');
+}
+
+export function getPaginatedList<T = any>(list: Array<T>, pageStart: number): Array<T> {
+  return list.filter((_, index) => index >= pageStart && index <= (pageStart + PAGE_SIZE - 1));
 }

@@ -5,7 +5,7 @@ import SearchField from '../../common/SearchField/SearchField';
 import Paginator from '../../common/Paginator/Paginator';
 import TeamCard from '../../cards/TeamCard/TeamCard';
 import {PAGE_SIZE} from '../../../settings';
-import {isTCompetition, isTTeam} from '../../../utils';
+import {getPaginatedList, isTCompetition, isTTeam} from '../../../utils';
 import './ItemsList.scss';
 
 type CompetitionListProp = {
@@ -17,7 +17,7 @@ const ItemsList: React.FC<CompetitionListProp> = ({list}) => {
   const [search, setSearch] = useState<string>('');
 
   // При изменении исходного списка - сбрасываем параметры пагинации
-  useEffect(()=>{
+  useEffect(() => {
     setPageStart(0);
   }, [list]);
 
@@ -31,7 +31,7 @@ const ItemsList: React.FC<CompetitionListProp> = ({list}) => {
   // Отсекаем элементы, не подходящие под критерии поиска
   if (search.length > 0) {
     const _search = search.toLowerCase();
-    _list = list.filter((item: TCompetition | TTeam): boolean => {
+    _list = _list.filter((item: TCompetition | TTeam): boolean => {
       if (isTCompetition(item)) {
         const {name: cName, area: {name: aName}} = item;
         return cName.toLowerCase().includes(_search) || aName.toLowerCase().includes(_search);
@@ -43,7 +43,7 @@ const ItemsList: React.FC<CompetitionListProp> = ({list}) => {
   const searchedLength = _list.length;
 
   // Применяем пагинацию
-  _list = _list.filter((_, index) => index >= pageStart && index <= (pageStart + PAGE_SIZE - 1));
+  _list = getPaginatedList(_list, pageStart);
 
   // Формируем контент (итоговый список элементов React)
   const content: Array<React.ReactElement> = [];
