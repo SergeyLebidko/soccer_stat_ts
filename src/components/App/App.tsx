@@ -7,6 +7,7 @@ import Preloader from '../common/Preloader/Preloader';
 import Error from '../common/Error/Error';
 import {TCompetition, TTeam} from '../../types';
 import {loadCompetitionList, loadTeamList} from '../../utils';
+import {AppContext} from '../../context';
 
 const App: React.FC = () => {
   const [preloader, setPreloader] = useState<boolean>(true);
@@ -30,18 +31,20 @@ const App: React.FC = () => {
   if (error) return <Error error={error}/>;
 
   return (
-    <HashRouter>
-      <Routes>
-        <Route path="/" element={<Layout/>}>
-          <Route index element={<Navigate to="competitions"/>}/>
-          <Route path="competitions" element={<ItemsList list={competitionList}/>}/>
-          <Route path="teams" element={<ItemsList list={teamList}/>}/>
-          <Route path="competitions/:id" element={<Calendar calendarType="competitions"/>}/>
-          <Route path="teams/:id" element={<Calendar calendarType="teams"/>}/>
-          <Route path="*" element={<Error error="Старница не найдена..."/>}/>
-        </Route>
-      </Routes>
-    </HashRouter>
+    <AppContext.Provider value={{competitionList, teamList}}>
+      <HashRouter>
+        <Routes>
+          <Route path="/" element={<Layout/>}>
+            <Route index element={<Navigate to="competitions"/>}/>
+            <Route path="competitions" element={<ItemsList listType="competition"/>}/>
+            <Route path="teams" element={<ItemsList listType="team"/>}/>
+            <Route path="competitions/:id" element={<Calendar calendarType="competition"/>}/>
+            <Route path="teams/:id" element={<Calendar calendarType="team"/>}/>
+            <Route path="*" element={<Error error="Старница не найдена..."/>}/>
+          </Route>
+        </Routes>
+      </HashRouter>
+    </AppContext.Provider>
   );
 };
 

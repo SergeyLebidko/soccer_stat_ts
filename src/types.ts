@@ -1,5 +1,5 @@
 // Типы календарей
-export type CalendarType = 'competitions' | 'teams';
+export type DataType = 'competition' | 'team';
 
 // Типы основных объектов
 export type TCompetition = {
@@ -56,10 +56,6 @@ export type TTeamListPayload = {
 }
 
 export type TCompetitionCalendarPayload = {
-  competition: {
-    id: number,
-    name: string,
-  },
   matches: Array<TMatch>
 }
 
@@ -69,3 +65,9 @@ export type TTeamCalendarPayload = {
 
 // eslint-disable-next-line max-len
 export type ApiPayload = TCompetitionListPayload | TTeamListPayload | TCompetitionCalendarPayload | TTeamCalendarPayload;
+
+// Тип для контекста
+export type TContextType = {
+  competitionList: Array<TCompetition>,
+  teamList: Array<TTeam>
+}
