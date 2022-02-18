@@ -1,5 +1,7 @@
+// Типы календарей
 export type CalendarType = 'competitions' | 'teams';
 
+// Типы основных объектов
 export type TCompetition = {
   id: number,
   name: string,
@@ -44,11 +46,12 @@ export type TMatch = {
   }
 }
 
-export type TCompetitionPayload = {
+// Типы для возвращаемых API данных
+export type TCompetitionListPayload = {
   competitions: Array<TCompetition>
 }
 
-export type TTeamPayload = {
+export type TTeamListPayload = {
   teams: Array<TTeam>
 }
 
@@ -60,3 +63,9 @@ export type TCompetitionCalendarPayload = {
   matches: Array<TMatch>
 }
 
+export type TTeamCalendarPayload = {
+  matches: Array<TMatch>
+}
+
+// eslint-disable-next-line max-len
+export type ApiPayload = TCompetitionListPayload | TTeamListPayload | TCompetitionCalendarPayload | TTeamCalendarPayload;

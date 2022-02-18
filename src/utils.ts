@@ -1,14 +1,15 @@
 import {COMPETITION_URL, PAGE_SIZE, TEAM_URL} from './settings';
 import {
+  ApiPayload,
   TCompetition, TCompetitionCalendarPayload,
-  TCompetitionPayload,
+  TCompetitionListPayload,
   TMatch,
-  TTeam,
-  TTeamPayload,
+  TTeam, TTeamCalendarPayload,
+  TTeamListPayload,
 } from './types';
 
 // Сетевые функции
-async function load<T = TCompetitionPayload | TTeamPayload>(url: string, errorMessage: string): Promise<T> {
+async function load<T = ApiPayload>(url: string, errorMessage: string): Promise<T> {
   const headers: HeadersInit = new Headers();
   headers.set('X-Auth-Token', process.env.REACT_APP_API_KEY as string);
 
@@ -37,7 +38,7 @@ async function load<T = TCompetitionPayload | TTeamPayload>(url: string, errorMe
 }
 
 export async function loadCompetitionList(): Promise<Array<TCompetition>> {
-  const payload = await load<TCompetitionPayload>(
+  const payload = await load<TCompetitionListPayload>(
       COMPETITION_URL,
       'Не удалось загрузить список лиг',
   );
@@ -45,7 +46,7 @@ export async function loadCompetitionList(): Promise<Array<TCompetition>> {
 }
 
 export async function loadTeamList(): Promise<Array<TTeam>> {
-  const payload = await load<TTeamPayload>(
+  const payload = await load<TTeamListPayload>(
       TEAM_URL,
       'Не удалось загрузить список команд',
   );
@@ -59,6 +60,14 @@ export async function loadCompetitionCalendar(id: string): Promise<[Omit<TCompet
       'Не удалось загрузить календарь лиги',
   );
   return [payload.competition, payload.matches];
+}
+
+export async function loadTeamCalendar(id: string): Promise<Array<TMatch>> {
+  const payload = await load<TTeamCalendarPayload>(
+      `${TEAM_URL}${id}/matches/`,
+      'Не удалось загрузить календарь команды',
+  );
+  return payload.matches;
 }
 
 // Защиты типов
