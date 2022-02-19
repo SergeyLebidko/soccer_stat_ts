@@ -53,7 +53,6 @@ export async function loadTeamList(): Promise<Array<TTeam>> {
   return payload.teams;
 }
 
-// eslint-disable-next-line max-len
 export async function loadCompetitionCalendar(id: string): Promise<Array<TMatch>> {
   const payload = await load<TCompetitionCalendarPayload>(
       `${COMPETITION_URL}${id}/matches/`,
@@ -68,6 +67,20 @@ export async function loadTeamCalendar(id: string): Promise<Array<TMatch>> {
       'Не удалось загрузить календарь команды',
   );
   return payload.matches;
+}
+
+export async function loadTeam(id: string): Promise<TTeam> {
+  return await load<TTeam>(
+      `${TEAM_URL}${id}/`,
+      'Не удалось получить сведения о команде',
+  );
+}
+
+export async function loadCompetition(id: string): Promise<TCompetition> {
+  return await load<TCompetition>(
+      `${COMPETITION_URL}${id}/`,
+      'Не удалось получить сведения о лиге',
+  );
 }
 
 // Вспомогательные функции

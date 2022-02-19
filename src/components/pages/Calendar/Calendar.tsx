@@ -6,10 +6,10 @@ import MatchCard from '../../cards/MatchCard/MatchCard';
 import Paginator from '../../common/Paginator/Paginator';
 import BreadCrumbs from '../../common/BreadCrumbs/BreadCrumbs';
 import DatesFilter from '../../common/DatesFilter/DatesFilter';
-import {DataType, TMatch} from '../../../types';
+import {DataType, TCompetition, TMatch, TTeam} from '../../../types';
 import {
-  getPaginatedList,
-  loadCompetitionCalendar,
+  getPaginatedList, loadCompetition,
+  loadCompetitionCalendar, loadTeam,
   loadTeamCalendar,
 } from '../../../utils';
 import {PAGE_SIZE} from '../../../settings';
@@ -36,44 +36,43 @@ const Calendar: React.FC<CalendarProps> = ({calendarType}) => {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    // Ищем в загруженных ранее списках команд и соревнований информацию о соревновании или команде
-    let title: string | undefined;
+    // Чтобы уменьшить количество запросов к api, ищем данные о команде или лиге в загруженных при старте данных
+    let title: TTeam | TCompetition | undefined;
     if (calendarType === 'competition') {
-      title = context.competitionList.find((item) => (item.id + '') === id)?.name;
+      title = context.competitionList.find((item) => (item.id + '') === id);
     }
     if (calendarType === 'team') {
-      title = context.teamList.find((item) => (item.id + '') === id)?.name;
+      title = context.teamList.find((item) => (item.id + '') === id);
     }
+    let titlePromise: Promise<TTeam | TCompetition | undefined> = Promise.resolve(title);
 
-    // Если информация не найдена, выводим ошибку
+    // Если информация не найдена в кэшированных данных - пробуем загрузить ее с сервера
     if (title === undefined) {
       if (calendarType === 'competition') {
-        setError('Не удалось найти данные о лиге');
+        titlePromise = loadCompetition(id + '');
       }
       if (calendarType === 'team') {
-        setError('Не удалось найти данные о команде');
+        titlePromise = loadTeam(id + '');
       }
-      setPreloader(false);
-      return;
     }
 
-    // Если информация найдена - пытаемся загрузить список матчей лиги или команды
-    let loadedPromise: Promise<Array<TMatch>> = Promise.resolve([]);
+    // Пытаемся загрузить список матчей лиги или команды
+    let matchesPromise: Promise<Array<TMatch>> = Promise.resolve([]);
     if (calendarType === 'competition') {
-      loadedPromise = loadCompetitionCalendar(id || '');
+      matchesPromise = loadCompetitionCalendar(id || '');
     }
     if (calendarType === 'team') {
-      loadedPromise = loadTeamCalendar(id || '');
+      matchesPromise = loadTeamCalendar(id || '');
     }
 
-    loadedPromise
-        .then((matches) => {
-          setTitle(title as string);
+    Promise.all([matchesPromise, titlePromise])
+        .then(([matches, title]) => {
+          setTitle((title as TCompetition | TTeam).name);
           setMatches(matches);
         })
         .catch((err: Error) => setError(err.message))
         .finally(() => setPreloader(false));
-  }, [id, calendarType]);
+  }, [id, calendarType, context]);
 
   if (preloader) return <Preloader/>;
 

@@ -64,7 +64,7 @@ export type TTeamCalendarPayload = {
 }
 
 // eslint-disable-next-line max-len
-export type ApiPayload = TCompetitionListPayload | TTeamListPayload | TCompetitionCalendarPayload | TTeamCalendarPayload;
+export type ApiPayload = TCompetitionListPayload | TTeamListPayload | TCompetitionCalendarPayload | TTeamCalendarPayload | TCompetition | TTeam;
 
 // Тип для контекста
 export type TContextType = {
