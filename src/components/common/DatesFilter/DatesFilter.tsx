@@ -36,7 +36,10 @@ const DatesFilter: React.FC<DateFilterProps> = ({rangeChangeHandler}) => {
         <label htmlFor={toBlockId} className="dates_filter__title">по:</label>
         <input id={toBlockId} ref={toRef} className="dates_filter__date_field" type="date" onChange={dateHandler}/>
       </div>
-      {hasMsg && <div className="dates_filter__msg_block">Для отбора матчей по дате выберите оба значения</div>}
+      {hasMsg &&
+      <div className="dates_filter__msg_block">
+        Для отбора матчей по дате выберите оба значения. Чтобы отменить отбор по дате - удалите оба значения.
+      </div>}
     </div>
   );
 };
