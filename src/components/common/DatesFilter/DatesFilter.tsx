@@ -30,6 +30,8 @@ const DatesFilter: React.FC<DateFilterProps> = ({rangeChangeHandler}) => {
         <label htmlFor={toBlockId} className="dates_filter__title">по:</label>
         <input id={toBlockId} ref={toRef} className="dates_filter__date_field" type="date" onChange={dateHandler}/>
       </div>
+      <button className="dates_filter__button">Сброс</button>
+      <button className="dates_filter__button">Применить</button>
     </div>
   );
 };

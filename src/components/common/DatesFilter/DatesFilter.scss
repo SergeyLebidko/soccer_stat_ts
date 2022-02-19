@@ -3,32 +3,69 @@
 .dates_filter {
   display: flex;
 
-  &__filter_block, &__msg_block {
-    margin: 4px 2em 0 0;
+  &__filter_block {
+    width: 13em;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
   }
 
-  &__msg_block {
-    font-size: 0.8em;
-    color: $orange-accent;
-    max-width: 30em;
+  &__filter_block + &__filter_block {
+    margin: 0 0 0 1em;
   }
 
   &__title {
-    display: inline-block;
-    width: 1.5em;
+    width: 2em;
   }
 
   &__date_field {
-    margin-left: 0.5em;
+    flex: 1;
     padding: 4px;
-    outline: none;
     border: 1px solid $gray-light;
     border-radius: 3px;
+  }
+
+  &__button {
+    width: 8em;
+    padding: 0 1em;
+    margin: 0 0 0 1em;
+
+    cursor: pointer;
+    border: 1px solid $black;
+    border-radius: 3px;
+
+    background-color: transparent;
+
+    transition: all 300ms;
+
+    &:hover {
+      border: 1px solid $blue-accent;
+      background-color: $blue-accent;
+      color: $white;
+      transform: translateY(-4px);
+      box-shadow: 0 4px 4px $gray-light;
+    }
+
+    &:active {
+      transform: translateY(0);
+      box-shadow: none;
+      transition: all 50ms;
+    }
   }
 }
 
 @media (max-width: $medium-width) {
   .dates_filter {
     flex-direction: column;
+
+    &__filter_block + &__filter_block {
+      margin: 1em 0 0 0;
+    }
+
+    &__button {
+      width: 13em;
+      margin: 1em 0 0 0;
+      padding: 6px 1em;
+    }
   }
 }
