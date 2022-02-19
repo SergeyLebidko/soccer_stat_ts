@@ -3,15 +3,15 @@
 .dates_filter {
   display: flex;
 
+  > * + * {
+    margin: 0 0 0 1em;
+  }
+
   &__filter_block {
     width: 13em;
     display: flex;
     justify-content: space-between;
     align-items: center;
-  }
-
-  &__filter_block + &__filter_block {
-    margin: 0 0 0 1em;
   }
 
   &__title {
@@ -28,7 +28,6 @@
   &__button {
     width: 8em;
     padding: 0 1em;
-    margin: 0 0 0 1em;
 
     cursor: pointer;
     border: 1px solid $black;
@@ -52,20 +51,31 @@
       transition: all 50ms;
     }
   }
+
+  &__error_block {
+    display: flex;
+    align-items: flex-end;
+    max-width: 30em;
+    color: $orange-accent;
+    font-size: 0.9em;
+  }
 }
 
 @media (max-width: $medium-width) {
   .dates_filter {
     flex-direction: column;
 
-    &__filter_block + &__filter_block {
+    > * + * {
       margin: 1em 0 0 0;
     }
 
     &__button {
       width: 13em;
-      margin: 1em 0 0 0;
       padding: 6px 1em;
+    }
+
+    &__error_block {
+      width: 13em;
     }
   }
 }
