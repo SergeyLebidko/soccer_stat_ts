@@ -1,4 +1,4 @@
-import React, {useRef, useState} from 'react';
+import React, {useRef} from 'react';
 import {createRandomString} from '../../../utils';
 import './DatesFilter.scss';
 
@@ -7,7 +7,6 @@ type DateFilterProps = {
 }
 
 const DatesFilter: React.FC<DateFilterProps> = ({rangeChangeHandler}) => {
-  const [hasMsg, setHasMsg] = useState<boolean>(false);
   const fromRef = useRef<HTMLInputElement>(null);
   const toRef = useRef<HTMLInputElement>(null);
 
@@ -18,11 +17,6 @@ const DatesFilter: React.FC<DateFilterProps> = ({rangeChangeHandler}) => {
     if (fromRef.current === null || toRef.current === null) return;
     const from = fromRef.current.value;
     const to = toRef.current.value;
-    if ((!!from || !!to) && !(!!from && !!to)) {
-      setHasMsg(true);
-    } else {
-      setHasMsg(false);
-    }
     rangeChangeHandler(from, to);
   };
 
@@ -36,10 +30,6 @@ const DatesFilter: React.FC<DateFilterProps> = ({rangeChangeHandler}) => {
         <label htmlFor={toBlockId} className="dates_filter__title">по:</label>
         <input id={toBlockId} ref={toRef} className="dates_filter__date_field" type="date" onChange={dateHandler}/>
       </div>
-      {hasMsg &&
-      <div className="dates_filter__msg_block">
-        Для отбора матчей по дате выберите оба значения. Чтобы отменить отбор по дате - удалите оба значения.
-      </div>}
     </div>
   );
 };

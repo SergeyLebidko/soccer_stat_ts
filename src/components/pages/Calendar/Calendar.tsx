@@ -1,4 +1,4 @@
-import React, {useContext, useEffect, useState} from 'react';
+import React, {useCallback, useContext, useEffect, useState} from 'react';
 import {Link, useParams} from 'react-router-dom';
 import Preloader from '../../common/Preloader/Preloader';
 import Error from '../../common/Error/Error';
@@ -34,7 +34,7 @@ const Calendar: React.FC<CalendarProps> = ({calendarType}) => {
 
   const [dateRange, setDateRange] = useState<[string, string]>(['', '']);
 
-  const reload = (): void => {
+  const reload = useCallback(() => {
     // Чтобы уменьшить количество запросов к api, ищем данные о команде или лиге в загруженных при старте данных
     let title: TTeam | TCompetition | undefined;
     if (calendarType === 'competition') {
@@ -72,8 +72,9 @@ const Calendar: React.FC<CalendarProps> = ({calendarType}) => {
         })
         .catch((err: Error) => setError(err.message))
         .finally(() => setPreloader(false));
-  };
+  }, [id, calendarType, context, dateRange]);
 
+  // При изменении входных параметров компонента - сбрасываем состояние и перезагружаем данные
   useEffect(() => {
     setPreloader(true);
     setError(null);
