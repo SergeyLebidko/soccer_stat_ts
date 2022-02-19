@@ -24,18 +24,17 @@ const Calendar: React.FC<CalendarProps> = ({calendarType}) => {
   const context = useContext(AppContext);
   const {id} = useParams();
 
-  const [title, setTitle] = useState<string>('');
-  const [matches, setMatches] = useState<Array<TMatch>>([]);
-
-  const [pageStart, setPageStart] = useState<number>(0);
-
-  // const [from, setFrom] = useState<string>('');
-  // const [to, setTo] = useState<string>('');
-
   const [preloader, setPreloader] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
+  const [title, setTitle] = useState<string>('');
+
+  const [matches, setMatches] = useState<Array<TMatch>>([]);
+  const [pageStart, setPageStart] = useState<number>(0);
+
+  const [dateRange, setDateRange] = useState<[string, string]>(['', '']);
+
+  const reload = (): void => {
     // Чтобы уменьшить количество запросов к api, ищем данные о команде или лиге в загруженных при старте данных
     let title: TTeam | TCompetition | undefined;
     if (calendarType === 'competition') {
@@ -58,11 +57,12 @@ const Calendar: React.FC<CalendarProps> = ({calendarType}) => {
 
     // Пытаемся загрузить список матчей лиги или команды
     let matchesPromise: Promise<Array<TMatch>> = Promise.resolve([]);
+    const [from, to] = dateRange;
     if (calendarType === 'competition') {
-      matchesPromise = loadCompetitionCalendar(id || '');
+      matchesPromise = loadCompetitionCalendar(id || '', from, to);
     }
     if (calendarType === 'team') {
-      matchesPromise = loadTeamCalendar(id || '');
+      matchesPromise = loadTeamCalendar(id || '', from, to);
     }
 
     Promise.all([matchesPromise, titlePromise])
@@ -72,7 +72,21 @@ const Calendar: React.FC<CalendarProps> = ({calendarType}) => {
         })
         .catch((err: Error) => setError(err.message))
         .finally(() => setPreloader(false));
+  };
+
+  useEffect(() => {
+    setPreloader(true);
+    setError(null);
+    setTitle('');
+    setMatches([]);
+    setPageStart(0);
+    setDateRange(['', '']);
+    reload();
   }, [id, calendarType, context]);
+
+  const rangeChangeHandler = (from: string, to: string): void => {
+    console.log(`[${from}, ${to}] [${from.length}, ${to.length}]`);
+  };
 
   if (preloader) return <Preloader/>;
 
@@ -86,7 +100,7 @@ const Calendar: React.FC<CalendarProps> = ({calendarType}) => {
       {calendarType === 'competition' && <BreadCrumbs link={<Link to="/competitions">Лиги</Link>} title={title}/>}
       {calendarType === 'team' && <BreadCrumbs link={<Link to="/teams">Команды</Link>} title={title}/>}
       <h1 className="calendar__title">Матчи</h1>
-      <DatesFilter/>
+      <DatesFilter rangeChangeHandler={rangeChangeHandler}/>
       <ul className="calendar__cards_block">
         {_matches.map((match) => <MatchCard key={match.id} match={match}/>)}
       </ul>

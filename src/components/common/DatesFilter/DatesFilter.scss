@@ -2,10 +2,15 @@
 
 .dates_filter {
   display: flex;
-  flex-wrap: wrap;
 
-  &__filter_block {
+  &__filter_block, &__msg_block {
     margin: 4px 2em 0 0;
+  }
+
+  &__msg_block {
+    font-size: 0.8em;
+    color: $orange-accent;
+    max-width: 17em;
   }
 
   &__title {
@@ -20,5 +25,10 @@
     border: 1px solid $gray-light;
     border-radius: 3px;
   }
+}
 
+@media (max-width: $medium-width) {
+  .dates_filter {
+    flex-direction: column;
+  }
 }

@@ -53,17 +53,17 @@ export async function loadTeamList(): Promise<Array<TTeam>> {
   return payload.teams;
 }
 
-export async function loadCompetitionCalendar(id: string): Promise<Array<TMatch>> {
+export async function loadCompetitionCalendar(id: string, from: string, to: string): Promise<Array<TMatch>> {
   const payload = await load<TCompetitionCalendarPayload>(
-      `${COMPETITION_URL}${id}/matches/`,
+      `${COMPETITION_URL}${id}/matches/${!!from && !!to ? `?dateFrom=${from}&dateTo=${to}` : ''}`,
       'Не удалось загрузить календарь лиги',
   );
   return payload.matches;
 }
 
-export async function loadTeamCalendar(id: string): Promise<Array<TMatch>> {
+export async function loadTeamCalendar(id: string, from: string, to: string): Promise<Array<TMatch>> {
   const payload = await load<TTeamCalendarPayload>(
-      `${TEAM_URL}${id}/matches/`,
+      `${TEAM_URL}${id}/matches/${!!from && !!to ? `?dateFrom=${from}&dateTo=${to}` : ''}`,
       'Не удалось загрузить календарь команды',
   );
   return payload.matches;
