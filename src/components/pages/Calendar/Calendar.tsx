@@ -95,7 +95,8 @@ const Calendar: React.FC<CalendarProps> = ({calendarType}) => {
   }, [dateRange]);
 
   const rangeChangeHandler = (from: string, to: string): void => {
-    // console.log(`[${from}, ${to}] [${from.length}, ${to.length}]`);
+    const [curFrom, curTo] = dateRange;
+    if (curFrom === from && curTo === to) return;
     setDateRange([from, to]);
   };
 
@@ -111,7 +112,7 @@ const Calendar: React.FC<CalendarProps> = ({calendarType}) => {
       {calendarType === 'competition' && <BreadCrumbs link={<Link to="/competitions">Лиги</Link>} title={title}/>}
       {calendarType === 'team' && <BreadCrumbs link={<Link to="/teams">Команды</Link>} title={title}/>}
       <h1 className="calendar__title">Матчи</h1>
-      <DatesFilter rangeChangeHandler={rangeChangeHandler}/>
+      <DatesFilter rangeChangeHandler={rangeChangeHandler} startFrom={dateRange[0]} startTo={dateRange[1]}/>
       <ul className="calendar__cards_block">
         {_matches.map((match) => <MatchCard key={match.id} match={match}/>)}
       </ul>

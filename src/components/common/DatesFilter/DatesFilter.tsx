@@ -3,10 +3,12 @@ import {createRandomString} from '../../../utils';
 import './DatesFilter.scss';
 
 type DateFilterProps = {
+  startFrom: string,
+  startTo: string,
   rangeChangeHandler: (from: string, to: string) => void
 }
 
-const DatesFilter: React.FC<DateFilterProps> = ({rangeChangeHandler}) => {
+const DatesFilter: React.FC<DateFilterProps> = ({rangeChangeHandler, startFrom, startTo}) => {
   const [error, setError] = useState<string | null>(null);
   const errorTimer: { current: NodeJS.Timeout | undefined } = useRef();
 
@@ -64,11 +66,23 @@ const DatesFilter: React.FC<DateFilterProps> = ({rangeChangeHandler}) => {
     <div className="dates_filter">
       <div className="dates_filter__filter_block">
         <label htmlFor={fromBlockId} className="dates_filter__title">с:</label>
-        <input id={fromBlockId} ref={fromRef} className="dates_filter__date_field" type="date"/>
+        <input
+          id={fromBlockId}
+          ref={fromRef}
+          className="dates_filter__date_field"
+          type="date"
+          defaultValue={startFrom}
+        />
       </div>
       <div className="dates_filter__filter_block">
         <label htmlFor={toBlockId} className="dates_filter__title">по:</label>
-        <input id={toBlockId} ref={toRef} className="dates_filter__date_field" type="date"/>
+        <input
+          id={toBlockId}
+          ref={toRef}
+          className="dates_filter__date_field"
+          type="date"
+          defaultValue={startTo}
+        />
       </div>
       <button className="dates_filter__button" onClick={resetHandler}>Сброс</button>
       <button className="dates_filter__button" onClick={applyHandler}>Применить</button>
