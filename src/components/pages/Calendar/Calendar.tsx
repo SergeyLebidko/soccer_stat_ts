@@ -85,8 +85,18 @@ const Calendar: React.FC<CalendarProps> = ({calendarType}) => {
     reload();
   }, [id, calendarType, context]);
 
+  useEffect(() => {
+    setPreloader(true);
+    setError(null);
+    setTitle('');
+    setMatches([]);
+    setPageStart(0);
+    reload();
+  }, [dateRange]);
+
   const rangeChangeHandler = (from: string, to: string): void => {
-    console.log(`[${from}, ${to}] [${from.length}, ${to.length}]`);
+    // console.log(`[${from}, ${to}] [${from.length}, ${to.length}]`);
+    setDateRange([from, to]);
   };
 
   if (preloader) return <Preloader/>;
