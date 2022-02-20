@@ -1,4 +1,4 @@
-import React, {useContext, useEffect, useState} from 'react';
+import React, {useContext, useEffect, useRef, useState} from 'react';
 import {Link, useParams} from 'react-router-dom';
 import Preloader from '../../common/Preloader/Preloader';
 import Error from '../../common/Error/Error';
@@ -33,6 +33,19 @@ const Calendar: React.FC<CalendarProps> = ({calendarType}) => {
   const [pageStart, setPageStart] = useState<number>(0);
 
   const [dateRange, setDateRange] = useState<[string, string]>(['', '']);
+
+  const hasFirsRender = useRef<boolean>(true);
+
+  const reset = (fullReset: boolean): void => {
+    setPreloader(true);
+    setError(null);
+    setMatches([]);
+    setPageStart(0);
+    if (fullReset) {
+      setTitle('');
+      setDateRange(['', '']);
+    }
+  };
 
   // Функция возвращает промис с данными о лиге или команде, матчи которых отображает компонент
   const reloadTitle = (): Promise<TTeam | TCompetition> => {
@@ -88,23 +101,20 @@ const Calendar: React.FC<CalendarProps> = ({calendarType}) => {
         .finally(() => setPreloader(false));
   };
 
-  // При изменении входных параметров компонента - сбрасываем состояние и перезагружаем данные
+  // При изменении входных параметров компонента - полность сбрасываем состояние и перезагружаем все данные
   useEffect(() => {
-    setPreloader(true);
-    setError(null);
-    setTitle('');
-    setMatches([]);
-    setPageStart(0);
-    setDateRange(['', '']);
+    // Небольшая оптимизация: при первом рендере не сбрасываем состояние компонента
+    if (hasFirsRender.current) {
+      hasFirsRender.current = false;
+    } else {
+      reset(true);
+    }
     reload(true);
   }, [id, calendarType, context]);
 
+  // При изменении диапазона дат - сбрасываем состояние (за исключением дат и заголовка) и перезагружаем список матчей
   useEffect(() => {
-    setPreloader(true);
-    setError(null);
-    setTitle('');
-    setMatches([]);
-    setPageStart(0);
+    reset(false);
     reload(false);
   }, [dateRange]);
 
