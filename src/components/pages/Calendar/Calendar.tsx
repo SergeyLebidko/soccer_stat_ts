@@ -1,4 +1,4 @@
-import React, {useCallback, useContext, useEffect, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {Link, useParams} from 'react-router-dom';
 import Preloader from '../../common/Preloader/Preloader';
 import Error from '../../common/Error/Error';
@@ -34,7 +34,8 @@ const Calendar: React.FC<CalendarProps> = ({calendarType}) => {
 
   const [dateRange, setDateRange] = useState<[string, string]>(['', '']);
 
-  const reload = useCallback(() => {
+  // Функция возвращает промис с данными о лиге или команде, матчи которых отображает компонент
+  const reloadTitle = (): Promise<TTeam | TCompetition> => {
     // Чтобы уменьшить количество запросов к api, ищем данные о команде или лиге в загруженных при старте данных
     let title: TTeam | TCompetition | undefined;
     if (calendarType === 'competition') {
@@ -43,19 +44,22 @@ const Calendar: React.FC<CalendarProps> = ({calendarType}) => {
     if (calendarType === 'team') {
       title = context.teamList.find((item) => (item.id + '') === id);
     }
-    let titlePromise: Promise<TTeam | TCompetition | undefined> = Promise.resolve(title);
 
     // Если информация не найдена в кэшированных данных - пробуем загрузить ее с сервера
     if (title === undefined) {
       if (calendarType === 'competition') {
-        titlePromise = loadCompetition(id + '');
+        return loadCompetition(id + '');
       }
       if (calendarType === 'team') {
-        titlePromise = loadTeam(id + '');
+        return loadTeam(id + '');
       }
     }
 
-    // Пытаемся загрузить список матчей лиги или команды
+    return Promise.resolve(title as TCompetition | TTeam);
+  };
+
+  // Функция возвращает промис с данными о матчах лиги или команды
+  const reloadMatches = (): Promise<Array<TMatch>> => {
     let matchesPromise: Promise<Array<TMatch>> = Promise.resolve([]);
     const [from, to] = dateRange;
     if (calendarType === 'competition') {
@@ -64,15 +68,25 @@ const Calendar: React.FC<CalendarProps> = ({calendarType}) => {
     if (calendarType === 'team') {
       matchesPromise = loadTeamCalendar(id || '', from, to);
     }
+    return matchesPromise;
+  };
 
-    Promise.all([matchesPromise, titlePromise])
+  const reload = (withTitle: boolean): void => {
+    const promiseList: Array<Promise<any>> = [];
+    promiseList.push(reloadMatches());
+    if (withTitle) {
+      promiseList.push(reloadTitle());
+    }
+    Promise.all(promiseList)
         .then(([matches, title]) => {
-          setTitle((title as TCompetition | TTeam).name);
           setMatches(matches);
+          if (withTitle) {
+            setTitle((title as TCompetition | TTeam).name);
+          }
         })
         .catch((err: Error) => setError(err.message))
         .finally(() => setPreloader(false));
-  }, [id, calendarType, context, dateRange]);
+  };
 
   // При изменении входных параметров компонента - сбрасываем состояние и перезагружаем данные
   useEffect(() => {
@@ -82,7 +96,7 @@ const Calendar: React.FC<CalendarProps> = ({calendarType}) => {
     setMatches([]);
     setPageStart(0);
     setDateRange(['', '']);
-    reload();
+    reload(true);
   }, [id, calendarType, context]);
 
   useEffect(() => {
@@ -91,7 +105,7 @@ const Calendar: React.FC<CalendarProps> = ({calendarType}) => {
     setTitle('');
     setMatches([]);
     setPageStart(0);
-    reload();
+    reload(false);
   }, [dateRange]);
 
   const rangeChangeHandler = (from: string, to: string): void => {
