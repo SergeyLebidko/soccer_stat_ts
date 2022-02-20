@@ -71,3 +71,6 @@ export type TContextType = {
   competitionList: Array<TCompetition>,
   teamList: Array<TTeam>
 }
+
+// Тип для диапазона дат
+export type DateRange = [string, string];

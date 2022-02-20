@@ -1,11 +1,12 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {createRandomString} from '../../../utils/common_utils';
+import {DateRange} from '../../../types';
 import './DatesFilter.scss';
 
 type DateFilterProps = {
   startFrom: string,
   startTo: string,
-  rangeChangeHandler: (from: string, to: string) => void
+  rangeChangeHandler: (nextDateRange: DateRange) => void
 }
 
 const DatesFilter: React.FC<DateFilterProps> = ({rangeChangeHandler, startFrom, startTo}) => {
@@ -51,7 +52,7 @@ const DatesFilter: React.FC<DateFilterProps> = ({rangeChangeHandler, startFrom, 
       setErrorText('Выберите дату окончания');
       return;
     }
-    rangeChangeHandler(from, to);
+    rangeChangeHandler([from, to]);
   };
 
   const resetHandler = (): void => {
@@ -59,7 +60,7 @@ const DatesFilter: React.FC<DateFilterProps> = ({rangeChangeHandler, startFrom, 
     setError(null);
     fromRef.current.value = '';
     toRef.current.value = '';
-    rangeChangeHandler('', '');
+    rangeChangeHandler(['', '']);
   };
 
   return (

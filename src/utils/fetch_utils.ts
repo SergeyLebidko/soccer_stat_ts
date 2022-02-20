@@ -1,6 +1,6 @@
 import {COMPETITION_URL, TEAM_URL} from '../settings';
 import {
-  ApiPayload,
+  ApiPayload, DataType, DateRange,
   TCompetition,
   TCompetitionCalendarPayload,
   TCompetitionListPayload,
@@ -55,32 +55,56 @@ export async function loadTeamList(): Promise<Array<TTeam>> {
   return payload.teams;
 }
 
-export async function loadCompetitionCalendar(id: string, from: string, to: string): Promise<Array<TMatch>> {
+export async function loadCompetitionCalendar(id: number, from: string, to: string): Promise<Array<TMatch>> {
   const payload = await load<TCompetitionCalendarPayload>(
-      `${COMPETITION_URL}${id}/matches/${!!from && !!to ? `?dateFrom=${from}&dateTo=${to}` : ''}`,
+      `${COMPETITION_URL}${id}/matches/${from && to ? `?dateFrom=${from}&dateTo=${to}` : ''}`,
       'Не удалось загрузить календарь лиги',
   );
   return payload.matches;
 }
 
-export async function loadTeamCalendar(id: string, from: string, to: string): Promise<Array<TMatch>> {
+export async function loadTeamCalendar(id: number, from: string, to: string): Promise<Array<TMatch>> {
   const payload = await load<TTeamCalendarPayload>(
-      `${TEAM_URL}${id}/matches/${!!from && !!to ? `?dateFrom=${from}&dateTo=${to}` : ''}`,
+      `${TEAM_URL}${id}/matches/${from && to ? `?dateFrom=${from}&dateTo=${to}` : ''}`,
       'Не удалось загрузить календарь команды',
   );
   return payload.matches;
 }
 
-export async function loadTeam(id: string): Promise<TTeam> {
+export async function loadTeam(id: number): Promise<TTeam> {
   return await load<TTeam>(
       `${TEAM_URL}${id}/`,
       'Не удалось получить сведения о команде',
   );
 }
 
-export async function loadCompetition(id: string): Promise<TCompetition> {
+export async function loadCompetition(id: number): Promise<TCompetition> {
   return await load<TCompetition>(
       `${COMPETITION_URL}${id}/`,
       'Не удалось получить сведения о лиге',
   );
+}
+
+// Функция для загрузки отдельного элемента данных - лиги либо команды
+// @ts-ignore
+export async function loadElement(id: number, dataType: DataType): Promise<TCompetition | TTeam> {
+  if (dataType === 'competition') {
+    return loadCompetition(id);
+  }
+  if (dataType === 'team') {
+    return loadTeam(id);
+  }
+}
+
+// Функция для загрузки списка матчей лиги или команды
+export async function loadMatches(id: number, dataType: DataType, dateRange: DateRange): Promise<Array<TMatch>> {
+  const [from, to] = dateRange;
+  let matchesPromise: Promise<Array<TMatch>> = Promise.resolve([]);
+  if (dataType === 'competition') {
+    matchesPromise = loadCompetitionCalendar(id, from, to);
+  }
+  if (dataType === 'team') {
+    matchesPromise = loadTeamCalendar(id, from, to);
+  }
+  return matchesPromise;
 }

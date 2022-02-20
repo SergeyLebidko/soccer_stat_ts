@@ -6,16 +6,12 @@ import MatchCard from '../../cards/MatchCard/MatchCard';
 import Paginator from '../../common/Paginator/Paginator';
 import BreadCrumbs from '../../common/BreadCrumbs/BreadCrumbs';
 import DatesFilter from '../../common/DatesFilter/DatesFilter';
-import {DataType, TCompetition, TMatch, TTeam} from '../../../types';
-import {
-  loadCompetition,
-  loadCompetitionCalendar, loadTeam,
-  loadTeamCalendar,
-} from '../../../utils/fetch_utils';
+import {DataType, DateRange, TCompetition, TMatch, TTeam} from '../../../types';
+import {loadElement, loadMatches} from '../../../utils/fetch_utils';
 import {PAGE_SIZE} from '../../../settings';
 import {AppContext} from '../../../context';
-import './Calendar.scss';
 import {getPaginatedList} from '../../../utils/common_utils';
+import './Calendar.scss';
 
 type CalendarProps = {
   calendarType: DataType
@@ -33,7 +29,7 @@ const Calendar: React.FC<CalendarProps> = ({calendarType}) => {
   const [matches, setMatches] = useState<Array<TMatch>>([]);
   const [pageStart, setPageStart] = useState<number>(0);
 
-  const [dateRange, setDateRange] = useState<[string, string]>(['', '']);
+  const [dateRange, setDateRange] = useState<DateRange>(['', '']);
 
   const hasFirsRender = useRef<boolean>(true);
 
@@ -48,52 +44,25 @@ const Calendar: React.FC<CalendarProps> = ({calendarType}) => {
     }
   };
 
-  // Функция возвращает промис с данными о лиге или команде, матчи которых отображает компонент
-  const reloadTitle = (): Promise<TTeam | TCompetition> => {
-    // Чтобы уменьшить количество запросов к api, ищем данные о команде или лиге в загруженных при старте данных
-    let title: TTeam | TCompetition | undefined;
-    if (calendarType === 'competition') {
-      title = context.competitionList.find((item) => (item.id + '') === id);
-    }
-    if (calendarType === 'team') {
-      title = context.teamList.find((item) => (item.id + '') === id);
-    }
+  const reload = (withTitle: boolean): void => {
+    const promiseList: Array<Promise<TCompetition | TTeam | TMatch[]>> = [];
+    promiseList.push(loadMatches(+(id as string), calendarType, dateRange));
 
-    // Если информация не найдена в кэшированных данных - пробуем загрузить ее с сервера
-    if (title === undefined) {
+    // Если нужно перезагрузить данные заголовка, то сперва пытаемся найти их в ранее загруженных данных
+    if (withTitle) {
+      let title: TTeam | TCompetition | undefined;
       if (calendarType === 'competition') {
-        return loadCompetition(id + '');
+        title = context.competitionList.find((item) => item.id === +(id as string));
       }
       if (calendarType === 'team') {
-        return loadTeam(id + '');
+        title = context.teamList.find((item) => item.id === +(id as string));
       }
+      promiseList.push(title === undefined ? loadElement(+(id as string), calendarType) : Promise.resolve(title));
     }
 
-    return Promise.resolve(title as TCompetition | TTeam);
-  };
-
-  // Функция возвращает промис с данными о матчах лиги или команды
-  const reloadMatches = (): Promise<Array<TMatch>> => {
-    let matchesPromise: Promise<Array<TMatch>> = Promise.resolve([]);
-    const [from, to] = dateRange;
-    if (calendarType === 'competition') {
-      matchesPromise = loadCompetitionCalendar(id || '', from, to);
-    }
-    if (calendarType === 'team') {
-      matchesPromise = loadTeamCalendar(id || '', from, to);
-    }
-    return matchesPromise;
-  };
-
-  const reload = (withTitle: boolean): void => {
-    const promiseList: Array<Promise<any>> = [];
-    promiseList.push(reloadMatches());
-    if (withTitle) {
-      promiseList.push(reloadTitle());
-    }
     Promise.all(promiseList)
         .then(([matches, title]) => {
-          setMatches(matches);
+          setMatches(matches as TMatch[]);
           if (withTitle) {
             setTitle((title as TCompetition | TTeam).name);
           }
@@ -119,10 +88,11 @@ const Calendar: React.FC<CalendarProps> = ({calendarType}) => {
     reload(false);
   }, [dateRange]);
 
-  const rangeChangeHandler = (from: string, to: string): void => {
+  const rangeChangeHandler = (nextDateRange: DateRange): void => {
     const [curFrom, curTo] = dateRange;
-    if (curFrom === from && curTo === to) return;
-    setDateRange([from, to]);
+    const [nextFrom, nextTo] = nextDateRange;
+    if (curFrom === nextFrom && curTo === nextTo) return;
+    setDateRange(nextDateRange);
   };
 
   if (preloader) return <Preloader/>;
