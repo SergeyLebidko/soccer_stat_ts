@@ -6,7 +6,7 @@ import Calendar from '../pages/Calendar/Calendar';
 import Preloader from '../common/Preloader/Preloader';
 import Error from '../common/Error/Error';
 import {TCompetition, TTeam} from '../../types';
-import {loadCompetitionList, loadTeamList} from '../../utils';
+import {loadCompetitionList, loadTeamList} from '../../utils/fetch_utils';
 import {AppContext} from '../../context';
 
 const App: React.FC = () => {

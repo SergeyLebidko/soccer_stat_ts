@@ -5,9 +5,9 @@ import SearchField from '../../common/SearchField/SearchField';
 import Paginator from '../../common/Paginator/Paginator';
 import TeamCard from '../../cards/TeamCard/TeamCard';
 import {PAGE_SIZE} from '../../../settings';
-import {getPaginatedList} from '../../../utils';
 import {AppContext} from '../../../context';
 import './ItemsList.scss';
+import {getPaginatedList} from '../../../utils/common_utils';
 
 type ItemListProps = {
   listType: DataType

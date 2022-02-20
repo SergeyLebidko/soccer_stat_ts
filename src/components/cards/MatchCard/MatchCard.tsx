@@ -1,10 +1,10 @@
 import React from 'react';
 import {TMatch} from '../../../types';
 import {STATUS_LIST} from '../../../settings';
-import {getDateString} from '../../../utils';
 import './MatchCard.scss';
 import ScoreElement from '../../common/ScoreElement/ScoreElement';
 import {Link} from 'react-router-dom';
+import {getDateString} from '../../../utils/common_utils';
 
 type MatchCardProps = {
   match: TMatch

@@ -8,13 +8,14 @@ import BreadCrumbs from '../../common/BreadCrumbs/BreadCrumbs';
 import DatesFilter from '../../common/DatesFilter/DatesFilter';
 import {DataType, TCompetition, TMatch, TTeam} from '../../../types';
 import {
-  getPaginatedList, loadCompetition,
+  loadCompetition,
   loadCompetitionCalendar, loadTeam,
   loadTeamCalendar,
-} from '../../../utils';
+} from '../../../utils/fetch_utils';
 import {PAGE_SIZE} from '../../../settings';
 import {AppContext} from '../../../context';
 import './Calendar.scss';
+import {getPaginatedList} from '../../../utils/common_utils';
 
 type CalendarProps = {
   calendarType: DataType

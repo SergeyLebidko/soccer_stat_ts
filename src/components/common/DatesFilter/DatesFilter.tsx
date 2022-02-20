@@ -1,6 +1,6 @@
 import React, {useEffect, useRef, useState} from 'react';
-import {createRandomString} from '../../../utils';
 import './DatesFilter.scss';
+import {createRandomString} from '../../../utils/common_utils';
 
 type DateFilterProps = {
   startFrom: string,
