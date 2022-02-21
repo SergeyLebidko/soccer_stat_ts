@@ -16,7 +16,7 @@ export function getPaginatedList<T = any>(list: Array<T>, pageStart: number): Ar
 }
 
 export function getDateString(dateString: string): string {
-  const date = new Date(Date.parse(dateString));
+  const date = new Date(dateString);
   const day = ('00' + date.getDate()).slice(-2);
   const mon = ('00' + (date.getMonth() + 1)).slice(-2);
   const year = date.getFullYear();
