@@ -23,7 +23,7 @@ const DatesFilter: React.FC<DateFilterProps> = ({rangeChangeHandler, startFrom, 
     if (typeof errorTimer.current !== 'undefined') clearTimeout(errorTimer.current);
   };
 
-  // Предотвращаем возможное изменение состояния компонента по таймеру, после того как компонент размонтирован
+  // Предотвращаем возможное изменение состояния компонента по таймеру после того как компонент размонтирован
   useEffect(() => {
     return () => {
       clearTimer();
